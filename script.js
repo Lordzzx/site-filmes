@@ -1,3 +1,7 @@
+window.onerror = function(msg) {
+  document.body.innerHTML += "<p style='color:red'>ERRO JS: " + msg + "</p>";
+};
+
 const firebaseConfig = {
   apiKey: "AIzaSyCxkJCD8HENp0jk2ZwU0mLDhTi9zWd5WeM",
   authDomain: "netdev-9a4e6.firebaseapp.com",
@@ -15,7 +19,7 @@ const db = firebase.database();
 const container = document.getElementById("filmes-container");
 
 db.ref("Filmes").on("value", (snapshot) => {
-  container.innerHTML = "";
+  container.innerHTML = "OK, recebeu resposta do Firebase. Total: " + snapshot.numChildren();
 
   snapshot.forEach((filmeSnap) => {
     const filme = filmeSnap.val();
@@ -30,4 +34,6 @@ db.ref("Filmes").on("value", (snapshot) => {
 
     container.appendChild(card);
   });
+}, (error) => {
+  container.innerHTML = "ERRO FIREBASE: " + error.message;
 });
