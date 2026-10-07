@@ -7,7 +7,7 @@
         body { background-color: #141414; color: #fff; font-family: Arial, sans-serif; text-align: center; padding: 20px; margin: 0; }
         .container { max-width: 600px; margin: 0 auto; padding-top: 30px; }
         h1 { font-size: 24px; margin-bottom: 20px; color: #E50914; }
-        video { width: 100%; border-radius: 8px; background: #000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        video, iframe { width: 100%; aspect-ratio: 16/9; border: none; border-radius: 8px; background: #000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
         .info { text-align: left; margin-top: 20px; }
         .info p { font-size: 14px; color: #ccc; line-height: 1.5; }
         .info strong { color: #fff; }
@@ -19,9 +19,7 @@
     <div class="container">
         <h1 id="filme-titulo">Carregando...</h1>
 
-        <video id="filme-video" controls>
-            Seu celular não suporta este vídeo.
-        </video>
+        <div id="video-container"></div>
 
         <div class="info">
             <p><strong>Ano:</strong> <span id="filme-ano"></span></p>
@@ -50,6 +48,11 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
+        function getYoutubeId(url) {
+            const match = url.match(/(?:youtu\.be\/|youtube\.com\/watch\?v=)([a-zA-Z0-9_-]+)/);
+            return match ? match[1] : null;
+        }
+
         const params = new URLSearchParams(window.location.search);
         const id = params.get("id");
 
@@ -70,10 +73,19 @@
                     document.getElementById("filme-genero").innerText = filme.Genero;
                     document.getElementById("filme-sinopse").innerText = filme.Sinopse;
 
-                    const video = document.getElementById("filme-video");
-                    video.poster = filme.Capa;
-                    video.innerHTML = `<source src="${filme.Link}" type="video/mp4">`;
-                    video.load();
+                    const videoContainer = document.getElementById("video-container");
+                    const youtubeId = getYoutubeId(filme.Link || "");
+
+                    if (youtubeId) {
+                        videoContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${youtubeId}" allowfullscreen></iframe>`;
+                    } else {
+                        videoContainer.innerHTML = `
+                            <video controls poster="${filme.Capa}">
+                                <source src="${filme.Link}" type="video/mp4">
+                                Seu celular não suporta este vídeo.
+                            </video>
+                        `;
+                    }
                 })
                 .catch((error) => {
                     document.getElementById("filme-titulo").innerText = "Erro ao carregar filme.";
