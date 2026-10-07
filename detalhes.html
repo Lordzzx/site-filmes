@@ -8,22 +8,78 @@
         .container { max-width: 600px; margin: 0 auto; padding-top: 30px; }
         h1 { font-size: 24px; margin-bottom: 20px; color: #E50914; }
         video { width: 100%; border-radius: 8px; background: #000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .info { text-align: left; margin-top: 20px; }
+        .info p { font-size: 14px; color: #ccc; line-height: 1.5; }
+        .info strong { color: #fff; }
         .btn-voltar { display: inline-block; margin-top: 30px; color: #aaa; text-decoration: none; font-weight: bold; font-size: 15px; }
         .btn-voltar:hover { color: #fff; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Assistindo: A Origem do Código</h1>
-        
-        <!-- Player de Vídeo de Exemplo Real -->
-        <video controls autoplay>
-            <source src="https://googleapis.com" type="video/mp4">
+        <h1 id="filme-titulo">Carregando...</h1>
+
+        <video id="filme-video" controls>
             Seu celular não suporta este vídeo.
         </video>
+
+        <div class="info">
+            <p><strong>Ano:</strong> <span id="filme-ano"></span></p>
+            <p><strong>Gênero:</strong> <span id="filme-genero"></span></p>
+            <p><strong>Sinopse:</strong> <span id="filme-sinopse"></span></p>
+        </div>
 
         <br>
         <a href="index.html" class="btn-voltar">← Voltar para o Início</a>
     </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCxkJCD8HENp0jk2ZwU0mLDhTi9zWd5WeM",
+            authDomain: "netdev-9a4e6.firebaseapp.com",
+            databaseURL: "https://netdev-9a4e6-default-rtdb.firebaseio.com",
+            projectId: "netdev-9a4e6",
+            storageBucket: "netdev-9a4e6.firebasestorage.app",
+            messagingSenderId: "612992618514",
+            appId: "1:612992618514:web:36011d43647ea6d42fc8cb",
+            measurementId: "G-M9H44B2LV1"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get("id");
+
+        if (!id) {
+            document.getElementById("filme-titulo").innerText = "Filme não encontrado.";
+        } else {
+            db.ref("Filmes/" + id).once("value")
+                .then((snapshot) => {
+                    const filme = snapshot.val();
+
+                    if (!filme) {
+                        document.getElementById("filme-titulo").innerText = "Filme não encontrado.";
+                        return;
+                    }
+
+                    document.getElementById("filme-titulo").innerText = "Assistindo: " + filme.Titulo;
+                    document.getElementById("filme-ano").innerText = filme.Ano;
+                    document.getElementById("filme-genero").innerText = filme.Genero;
+                    document.getElementById("filme-sinopse").innerText = filme.Sinopse;
+
+                    const video = document.getElementById("filme-video");
+                    video.poster = filme.Capa;
+                    video.innerHTML = `<source src="${filme.Link}" type="video/mp4">`;
+                    video.load();
+                })
+                .catch((error) => {
+                    document.getElementById("filme-titulo").innerText = "Erro ao carregar filme.";
+                    console.error(error);
+                });
+        }
+    </script>
 </body>
 </html>
