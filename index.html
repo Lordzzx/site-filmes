@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LORDCINE - Netflix Clone</title>
+    <title>LORD-CINE</title>
     <style>
         body {
             background-color: #141414;
@@ -15,39 +15,88 @@
             background-color: #000000;
             padding: 15px 20px;
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
+            gap: 15px;
         }
         .logo {
             color: #E50914;
             font-size: 24px;
             font-weight: bold;
         }
+        .busca input {
+            background: #333;
+            border: 1px solid #555;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            width: 220px;
+        }
+        .busca input::placeholder { color: #999; }
         .user-info {
             display: none;
+            position: relative;
             align-items: center;
             gap: 10px;
         }
         .user-info img {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
+            cursor: pointer;
         }
-        .user-info span {
+        .user-dropdown {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: #2f2f2f;
+            border-radius: 6px;
+            padding: 12px;
+            min-width: 170px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            z-index: 10;
+            text-align: left;
+        }
+        .user-dropdown.mostrar { display: block; }
+        .user-dropdown p {
+            margin: 0 0 10px 0;
             font-size: 14px;
+            color: #ccc;
+            border-bottom: 1px solid #444;
+            padding-bottom: 8px;
         }
-        .user-info button {
+        .user-dropdown button {
+            width: 100%;
             background: transparent;
             border: 1px solid #555;
             color: #fff;
-            padding: 4px 10px;
+            padding: 6px 10px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 13px;
         }
-        .user-info button:hover {
-            background: #333;
+        .user-dropdown button:hover { background: #444; }
+        .categorias {
+            display: flex;
+            gap: 10px;
+            padding: 15px 20px 0 20px;
+            overflow-x: auto;
         }
+        .cat-btn {
+            background: #2f2f2f;
+            color: #ccc;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .cat-btn:hover { background: #444; color: #fff; }
+        .cat-btn.ativo { background: #E50914; color: #fff; }
         .banner {
             background: linear-gradient(rgba(0,0,0,0.2), #141414), url('https://picsum.photos') no-repeat center center/cover;
             height: 250px;
@@ -88,19 +137,6 @@
         }
         .btn-assistir {
             display: inline-block;
-            background-color: #2f2f2f;
-            border-radius: 6px;
-            overflow: hidden;
-            text-align: center;
-            padding-bottom: 10px;
-        }
-        .card img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-        }
-        .btn-assistir {
-            display: inline-block;
             background-color: #E50914;
             color: #fff;
             text-decoration: none;
@@ -115,23 +151,28 @@
 <body>
 
     <header>
-        <div class="logo">LORDCINE</div>
+        <div class="logo">LORD-CINE</div>
+        <div class="busca">
+            <input type="text" id="busca-input" placeholder="Pesquisar filmes...">
+        </div>
         <div class="user-info" id="user-info">
             <img id="user-foto" src="" alt="Perfil">
-            <span id="user-nome"></span>
-            <button id="btn-logout">Sair</button>
+            <div class="user-dropdown" id="user-dropdown">
+                <p id="user-nome"></p>
+                <button id="btn-logout">Sair</button>
+            </div>
         </div>
     </header>
+
+    <nav class="categorias" id="categorias-nav"></nav>
 
     <div class="banner">
         <h1>A Origem do Código</h1>
     </div>
 
     <div class="secao">
-        <h2>Populares na Netflix</h2>
-        <div class="carrossel" id="filmes-container">
-
-        </div>
+        <h2>Filmes</h2>
+        <div class="carrossel" id="filmes-container"></div>
     </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>

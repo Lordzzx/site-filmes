@@ -14,6 +14,67 @@ const db = firebase.database();
 const auth = firebase.auth();
 
 const container = document.getElementById("filmes-container");
+const categoriasNav = document.getElementById("categorias-nav");
+const buscaInput = document.getElementById("busca-input");
+
+let todosFilmes = [];
+let categoriaAtiva = "todos";
+
+function renderizarFilmes() {
+  const termoBusca = buscaInput.value.trim().toLowerCase();
+
+  const filtrados = todosFilmes.filter((filme) => {
+    const bateCategoria = categoriaAtiva === "todos" || filme.Genero === categoriaAtiva;
+    const bateBusca = (filme.Titulo || "").toLowerCase().includes(termoBusca);
+    return bateCategoria && bateBusca;
+  });
+
+  container.innerHTML = "";
+
+  if (filtrados.length === 0) {
+    container.innerHTML = "<p style='color:#aaa;'>Nenhum filme encontrado.</p>";
+    return;
+  }
+
+  filtrados.forEach((filme) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <img src="${filme.Capa}" alt="${filme.Titulo}">
+      <a href="detalhes.html?id=${filme.id}" class="btn-assistir">Ver Detalhes</a>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function montarCategorias() {
+  const generos = [...new Set(todosFilmes.map((f) => f.Genero).filter(Boolean))];
+
+  categoriasNav.innerHTML = "";
+
+  const btnTodos = document.createElement("button");
+  btnTodos.className = "cat-btn ativo";
+  btnTodos.textContent = "Todos";
+  btnTodos.dataset.genero = "todos";
+  categoriasNav.appendChild(btnTodos);
+
+  generos.forEach((genero) => {
+    const btn = document.createElement("button");
+    btn.className = "cat-btn";
+    btn.textContent = genero;
+    btn.dataset.genero = genero;
+    categoriasNav.appendChild(btn);
+  });
+
+  categoriasNav.querySelectorAll(".cat-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      categoriasNav.querySelectorAll(".cat-btn").forEach((b) => b.classList.remove("ativo"));
+      btn.classList.add("ativo");
+      categoriaAtiva = btn.dataset.genero;
+      renderizarFilmes();
+    });
+  });
+}
 
 auth.onAuthStateChanged((user) => {
   if (!user) {
@@ -26,24 +87,32 @@ auth.onAuthStateChanged((user) => {
   document.getElementById("user-info").style.display = "flex";
 
   db.ref("Filmes").on("value", (snapshot) => {
-    container.innerHTML = "";
+    todosFilmes = [];
 
     snapshot.forEach((filmeSnap) => {
       const filme = filmeSnap.val();
-      const id = filmeSnap.key;
-
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <img src="${filme.Capa}" alt="${filme.Titulo}">
-        <a href="detalhes.html?id=${id}" class="btn-assistir">Ver Detalhes</a>
-      `;
-
-      container.appendChild(card);
+      filme.id = filmeSnap.key;
+      todosFilmes.push(filme);
     });
+
+    montarCategorias();
+    renderizarFilmes();
   }, (error) => {
     console.error("Erro ao carregar filmes do Firebase:", error);
   });
+});
+
+buscaInput.addEventListener("input", renderizarFilmes);
+
+document.getElementById("user-foto").addEventListener("click", () => {
+  document.getElementById("user-dropdown").classList.toggle("mostrar");
+});
+
+document.addEventListener("click", (e) => {
+  const userInfo = document.getElementById("user-info");
+  if (!userInfo.contains(e.target)) {
+    document.getElementById("user-dropdown").classList.remove("mostrar");
+  }
 });
 
 document.getElementById("btn-logout").addEventListener("click", () => {
