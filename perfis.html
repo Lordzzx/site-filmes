@@ -1,0 +1,90 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NETDEV - Entrar</title>
+    <style>
+        body {
+            background-color: #141414;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        h1 { font-size: 28px; margin-bottom: 30px; }
+        .btn-google {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #fff;
+            color: #333;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+        }
+        .btn-google:hover { background: #eee; }
+        .btn-google img { width: 20px; height: 20px; }
+        #perfil-info { margin-top: 20px; color: #aaa; }
+    </style>
+</head>
+<body>
+    <h1>Entrar no NETDEV</h1>
+    <button class="btn-google" id="btn-login">
+        <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
+        Entrar com Google
+    </button>
+    <p id="perfil-info"></p>
+
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCxkJCD8HENp0jk2ZwU0mLDhTi9zWd5WeM",
+            authDomain: "netdev-9a4e6.firebaseapp.com",
+            databaseURL: "https://netdev-9a4e6-default-rtdb.firebaseio.com",
+            projectId: "netdev-9a4e6",
+            storageBucket: "netdev-9a4e6.firebasestorage.app",
+            messagingSenderId: "612992618514",
+            appId: "1:612992618514:web:36011d43647ea6d42fc8cb",
+            measurementId: "G-M9H44B2LV1"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const auth = firebase.auth();
+
+        document.getElementById("btn-login").addEventListener("click", () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    const user = result.user;
+
+                    const perfilRef = db.ref("Perfis/" + user.uid);
+                    perfilRef.once("value").then((snapshot) => {
+                        if (!snapshot.exists()) {
+                            perfilRef.set({
+                                Nome: user.displayName,
+                                Foto: user.photoURL,
+                                Email: user.email
+                            });
+                        }
+                        window.location.href = "index.html";
+                    });
+                })
+                .catch((error) => {
+                    document.getElementById("perfil-info").innerText = "Erro ao entrar: " + error.message;
+                    console.error(error);
+                });
+        });
+    </script>
+</body>
+</html>
