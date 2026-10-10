@@ -11,25 +11,43 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
+const auth = firebase.auth();
 
 const container = document.getElementById("filmes-container");
 
-db.ref("Filmes").on("value", (snapshot) => {
-  container.innerHTML = "";
+auth.onAuthStateChanged((user) => {
+  if (!user) {
+    window.location.href = "perfis.html";
+    return;
+  }
 
-  snapshot.forEach((filmeSnap) => {
-    const filme = filmeSnap.val();
-    const id = filmeSnap.key;
+  document.getElementById("user-nome").innerText = user.displayName;
+  document.getElementById("user-foto").src = user.photoURL;
+  document.getElementById("user-info").style.display = "flex";
 
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <img src="${filme.Capa}" alt="${filme.Titulo}">
-      <a href="detalhes.html?id=${id}" class="btn-assistir">Ver Detalhes</a>
-    `;
+  db.ref("Filmes").on("value", (snapshot) => {
+    container.innerHTML = "";
 
-    container.appendChild(card);
+    snapshot.forEach((filmeSnap) => {
+      const filme = filmeSnap.val();
+      const id = filmeSnap.key;
+
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <img src="${filme.Capa}" alt="${filme.Titulo}">
+        <a href="detalhes.html?id=${id}" class="btn-assistir">Ver Detalhes</a>
+      `;
+
+      container.appendChild(card);
+    });
+  }, (error) => {
+    console.error("Erro ao carregar filmes do Firebase:", error);
   });
-}, (error) => {
-  console.error("Erro ao carregar filmes do Firebase:", error);
+});
+
+document.getElementById("btn-logout").addEventListener("click", () => {
+  auth.signOut().then(() => {
+    window.location.href = "perfis.html";
+  });
 });
