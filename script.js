@@ -67,9 +67,7 @@ function renderizarTop100() {
 
 function renderizarContinuarAssistindo() {
   const historico = JSON.parse(localStorage.getItem("continuarAssistindo") || "[]");
-  const filmesHistorico = historico
-    .map((id) => todosFilmes.find((f) => f.id === id))
-    .filter(Boolean);
+  const filmesHistorico = historico.map((id) => todosFilmes.find((f) => f.id === id)).filter(Boolean);
 
   if (filmesHistorico.length === 0) {
     secaoContinuar.style.display = "none";
@@ -81,6 +79,18 @@ function renderizarContinuarAssistindo() {
   filmesHistorico.forEach((filme) => {
     continuarContainer.appendChild(criarCard(filme));
   });
+}
+
+function renderizarBanner() {
+  if (todosFilmes.length === 0) return;
+
+  const destaque = [...todosFilmes].sort((a, b) => (b.Nota || 0) - (a.Nota || 0))[0];
+
+  document.getElementById("banner-titulo").innerText = destaque.Titulo;
+  document.getElementById("banner-sinopse").innerText = destaque.Sinopse || "";
+  document.getElementById("banner-rating").innerText = destaque.Nota ? `⭐ ${destaque.Nota}` : "";
+  document.getElementById("banner-assistir").href = `detalhes.html?id=${destaque.id}`;
+  document.getElementById("banner-trailer").href = `detalhes.html?id=${destaque.id}`;
 }
 
 function montarCategorias() {
@@ -122,7 +132,7 @@ auth.onAuthStateChanged((user) => {
   document.getElementById("user-nome").innerText = user.displayName;
   document.getElementById("user-foto").src = user.photoURL;
   document.getElementById("user-foto-dropdown").src = user.photoURL;
-  document.getElementById("user-info").style.display = "flex";
+  document.getElementById("user-foto").style.display = "block";
 
   db.ref("Filmes").on("value", (snapshot) => {
     todosFilmes = [];
@@ -137,6 +147,7 @@ auth.onAuthStateChanged((user) => {
     renderizarFilmes();
     renderizarTop100();
     renderizarContinuarAssistindo();
+    renderizarBanner();
   }, (error) => {
     console.error("Erro ao carregar filmes do Firebase:", error);
   });
@@ -152,10 +163,10 @@ document.getElementById("btn-categorias").addEventListener("click", () => {
   categoriasNav.classList.toggle("mostrar");
 });
 
-document.getElementById("nav-catalogo-inferior").addEventListener("click", (e) => {
-  e.preventDefault();
-  window.scrollTo({ top: 0, behavior: "smooth" });
-  categoriasNav.classList.add("mostrar");
+document.getElementById("btn-busca-sidebar").addEventListener("click", () => {
+  const overlay = document.getElementById("busca-overlay");
+  overlay.style.display = overlay.style.display === "block" ? "none" : "block";
+  if (overlay.style.display === "block") buscaInput.focus();
 });
 
 document.addEventListener("click", (e) => {
@@ -165,7 +176,8 @@ document.addEventListener("click", (e) => {
   }
 
   const catWrapper = document.querySelector(".categorias-wrapper");
-  if (catWrapper && !catWrapper.contains(e.target)) {
+  const btnCategorias = document.getElementById("btn-categorias");
+  if (catWrapper && !catWrapper.contains(e.target) && !btnCategorias.contains(e.target)) {
     categoriasNav.classList.remove("mostrar");
   }
 });
