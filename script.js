@@ -31,7 +31,26 @@ function criarCard(filme, rank) {
     <img src="${filme.Capa}" alt="${filme.Titulo}">
     <a href="detalhes.html?id=${filme.id}" class="btn-assistir">Ver Detalhes</a>
   `;
+
+  card.querySelector("img").addEventListener("click", () => {
+    document.querySelectorAll(".card.selecionado").forEach((c) => c.classList.remove("selecionado"));
+    card.classList.add("selecionado");
+    selecionarDestaque(filme);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
   return card;
+}
+
+function selecionarDestaque(filme) {
+  document.getElementById("banner-titulo").innerText = filme.Titulo;
+  document.getElementById("banner-sinopse").innerText = filme.Sinopse || "";
+  document.getElementById("banner-rating").innerText = filme.Nota ? `⭐ ${filme.Nota}` : "";
+  document.getElementById("banner-assistir").href = `detalhes.html?id=${filme.id}`;
+  document.getElementById("banner-trailer").href = `detalhes.html?id=${filme.id}`;
+
+  const banner = document.getElementById("banner-destaque");
+  banner.style.backgroundImage = `linear-gradient(90deg, rgba(0,0,0,0.85) 30%, rgba(0,0,0,0.2)), url('${filme.Capa}')`;
 }
 
 function renderizarFilmes() {
@@ -83,14 +102,8 @@ function renderizarContinuarAssistindo() {
 
 function renderizarBanner() {
   if (todosFilmes.length === 0) return;
-
   const destaque = [...todosFilmes].sort((a, b) => (b.Nota || 0) - (a.Nota || 0))[0];
-
-  document.getElementById("banner-titulo").innerText = destaque.Titulo;
-  document.getElementById("banner-sinopse").innerText = destaque.Sinopse || "";
-  document.getElementById("banner-rating").innerText = destaque.Nota ? `⭐ ${destaque.Nota}` : "";
-  document.getElementById("banner-assistir").href = `detalhes.html?id=${destaque.id}`;
-  document.getElementById("banner-trailer").href = `detalhes.html?id=${destaque.id}`;
+  selecionarDestaque(destaque);
 }
 
 function montarCategorias() {
