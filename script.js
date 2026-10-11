@@ -63,7 +63,7 @@ function selecionarDestaque(filme) {
   document.getElementById("banner-trailer").href = `detalhes.html?id=${filme.id}`;
 
   const banner = document.getElementById("banner-destaque");
-   banner.style.backgroundImage = `linear-gradient(90deg, rgba(0,0,0,0.95) 15%, rgba(0,0,0,0.75) 40%, rgba(0,0,0,0.25) 65%, rgba(0,0,0,0) 90%), url('${filme.Fundo || filme.Capa}')`;
+   banner.style.backgroundImage = `linear-gradient(90deg, rgba(0,0,0,0.97) 0%, rgba(0,0,0,0.97) 45%, rgba(0,0,0,0) 85%), url('${filme.Fundo || filme.Capa}')`;
 
 function renderizarFilmes() {
   const termoBusca = buscaInput.value.trim().toLowerCase();
