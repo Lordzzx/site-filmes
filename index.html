@@ -2,445 +2,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LORD-CINE</title>
+    <title>PK FILMES - O Melhor do Cinema</title>
     <style>
+        :root {
+            --cor-vermelho: #E50914 !important;
+            --cor-vermelho-hover: #b80710 !important;
+            --fundo-principal: #0a0a0a !important;
+            --fundo-card: #161616 !important;
+        }
+
         * { box-sizing: border-box; }
+
         body {
-            background-color: #141414;
-            color: #ffffff;
+            background-color: var(--fundo-principal) !important;
+            color: #ffffff !important;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
         }
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            width: 80px;
-            background: #000;
-            border-right: 1px solid #222;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            padding: 20px 0;
-            z-index: 100;
-            overflow: hidden;
-            transition: width 0.25s ease;
+
+        .sidebar-logo .badge, .badge {
+            background: var(--cor-vermelho) !important;
+            color: #fff !important;
         }
-        .sidebar:hover {
-            width: 220px;
+
+        a[href*="vip"], .vip-btn {
+            background-color: var(--cor-vermelho) !important;
+            border-color: var(--cor-vermelho) !important;
+            color: #fff !important;
         }
-        .sidebar-logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 0 18px;
-            margin-bottom: 30px;
-            white-space: nowrap;
-        }
-        .sidebar-logo .badge {
-            width: 40px;
-            height: 40px;
-            flex-shrink: 0;
-            background: #E50914;
-            color: #fff;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 15px;
-        }
-        .sidebar-logo .nome-completo {
-            font-size: 16px;
-            font-weight: bold;
-            color: #fff;
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-        .sidebar:hover .sidebar-logo .nome-completo {
-            opacity: 1;
-        }
-        .sidebar-nav {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            flex: 1;
-            width: 100%;
-        }
-        .sidebar-item {
-            background: none;
-            border: none;
-            color: #999;
-            cursor: pointer;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            width: 100%;
-            padding: 10px 18px;
-            white-space: nowrap;
-        }
-        .sidebar-item .icone { font-size: 22px; flex-shrink: 0; }
-        .sidebar-item .label {
-            font-size: 14px;
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-        .sidebar:hover .sidebar-item .label {
-            opacity: 1;
-        }
-        .sidebar-item:hover, .sidebar-item.ativo {
-            background: #2f2f2f;
-            color: #fff;
-        }
-        .sidebar-perfil {
-            position: relative;
-        }
-        .sidebar-perfil > img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: none;
-        }
-        .user-dropdown {
-            display: none;
-            position: absolute;
-            bottom: 0;
-            left: 60px;
-            background: #2f2f2f;
+
+        .btn-assistir-grande, .btn-assistir, a.btn-assistir, button.btn-assistir, .hero-botoes a:first-child {
+            background-color: var(--cor-vermelho) !important;
+            color: #ffffff !important;
+            border: none !important;
+            font-weight: bold !important;
             border-radius: 6px;
-            padding: 14px;
-            min-width: 220px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            z-index: 10;
-            text-align: left;
         }
-        .user-dropdown.mostrar { display: block; }
-        .dropdown-perfil {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #444;
-            margin-bottom: 10px;
+        .btn-assistir-grande:hover, .btn-assistir:hover, .hero-botoes a:first-child:hover {
+            background-color: var(--cor-vermelho-hover) !important;
         }
-        .dropdown-perfil img { width: 40px; height: 40px; border-radius: 50%; }
-        .dropdown-perfil p { margin: 0; font-size: 14px; color: #fff; font-weight: bold; }
-        .dropdown-secao { margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #444; }
-        .dropdown-titulo { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 8px 0; }
-        .dropdown-link { display: block; color: #ccc; text-decoration: none; font-size: 13px; padding: 6px 0; }
-        .dropdown-link:hover { color: #E50914; }
-        .user-dropdown button {
-            width: 100%;
-            background: transparent;
-            border: 1px solid #555;
-            color: #fff;
-            padding: 6px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 13px;
+
+        .card, .poster-item {
+            background-color: var(--fundo-card) !important;
         }
-        .user-dropdown button:hover { background: #444; }
+        .card.selecionado, .card:hover, .poster-item:hover, .card:focus {
+            outline: 2px solid var(--cor-vermelho) !important;
+            border: 2px solid var(--cor-vermelho) !important;
+            box-shadow: 0 0 15px rgba(229, 9, 20, 0.7) !important;
+        }
+        .card .rank {
+            background: var(--cor-vermelho) !important;
+            color: #fff !important;
+        }
+
+        .fa-star, .rating-star, .banner-rating, span[style*="color"] {
+            color: var(--cor-vermelho) !important;
+        }
+
+        .sidebar, nav.sidebar, div[style*="position: fixed"] {
+            background-color: #000000 !important;
+        }
+        
+        .sidebar-item:hover, .sidebar-item.ativo, nav a.ativo, nav button.ativo {
+            color: var(--cor-vermelho) !important;
+        }
 
         .conteudo {
+            background-color: var(--fundo-principal) !important;
             margin-left: 80px;
             width: calc(100% - 80px);
         }
-        .busca-overlay {
-            display: none;
-            padding: 15px 30px 0 30px;
-        }
-        .busca-overlay input {
-            background: #2f2f2f;
-            border: 1px solid #555;
-            color: #fff;
-            padding: 10px 14px;
-            border-radius: 4px;
-            font-size: 14px;
-            width: 100%;
-            max-width: 400px;
-        }
-        .categorias-wrapper { position: relative; }
-        .categorias {
-            display: none;
-            flex-wrap: wrap;
-            gap: 10px;
-            position: fixed;
-            top: 110px;
-            left: 90px;
-            background: #181818;
-            border: 1px solid #333;
-            border-radius: 6px;
-            padding: 15px;
-            max-width: 520px;
-            z-index: 20;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.6);
-        }
-        .categorias.mostrar { display: flex; }
-        .cat-btn {
-            background: #2f2f2f; color: #ccc; border: none; padding: 6px 16px;
-            border-radius: 20px; font-size: 13px; cursor: pointer; white-space: nowrap;
-        }
-        .cat-btn:hover { background: #444; color: #fff; }
-        .cat-btn.ativo { background: #E50914; color: #fff; }
 
-        .banner {
-            position: relative;
-            min-height: 60vh;
-            display: flex;
-            align-items: flex-end;
-            padding: 40px 40px 110px 40px;
-            background-color: #000;
-            background-size: cover;
-            background-position: center center;
-            background-repeat: no-repeat;
-            transition: background-image 0.3s ease;
+        @media (max-width: 768px) {
+            .sidebar {
+                top: auto !important;
+                bottom: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                width: 100% !important;
+                height: 64px !important;
+                flex-direction: row !important;
+                align-items: center !important;
+                justify-content: space-around !important;
+                background-color: #121212 !important;
+                border-top: 1px solid #222 !important;
+                z-index: 999 !important;
+            }
+            .conteudo {
+                margin-left: 0 !important;
+                width: 100% !important;
+                padding-bottom: 70px !important;
+            }
         }
-        .banner::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            height: 260px;
-            background: linear-gradient(to bottom, rgba(20,20,20,0) 0%, #141414 100%);
-            pointer-events: none;
-        }
-        .conteudo > .secao:first-of-type {
-            margin-top: -210px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .banner-conteudo { max-width: 600px; }
-        .banner-conteudo h1 { font-size: 34px; margin: 0 0 12px 0; text-shadow: 2px 2px 6px #000; }
-        .banner-conteudo p { color: #ddd; font-size: 14px; line-height: 1.5; margin-bottom: 12px; }
-        .banner-logo-img { max-width: 100%; max-height: 140px; display: block; }
-        .banner-rating { color: #f5c518; font-weight: bold; font-size: 14px; margin-bottom: 18px; }
-        .banner-botoes { display: flex; gap: 12px; }
-        .btn-assistir-grande {
-            background: #E50914; color: #fff; text-decoration: none; font-weight: bold;
-            padding: 12px 26px; border-radius: 6px; font-size: 15px;
-        }
-        .btn-assistir-grande:hover { background: #ff1b26; }
-        .btn-trailer {
-            background: rgba(255,255,255,0.15); color: #fff; text-decoration: none; font-weight: bold;
-            padding: 12px 26px; border-radius: 6px; font-size: 15px;
-        }
-        .btn-trailer:hover { background: rgba(255,255,255,0.3); }
-
-        .secao { padding: 20px 30px; }
-        .secao h2 { font-size: 18px; margin-bottom: 10px; }
-        .carrossel { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px; }
-        .card { min-width: 140px; background-color: #2f2f2f; border-radius: 6px; overflow: hidden; text-align: center; padding-bottom: 10px; position: relative; }
-        .card img { width: 100%; height: 180px; object-fit: cover; }
-        .card-titulo { font-size: 13px; color: #ddd; margin: 8px 6px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .card.selecionado { outline: 2px solid #E50914; box-shadow: 0 0 15px rgba(229,9,20,0.6); border-radius: 6px; }
-.carrossel-wrapper { position: relative; }
-.seta-carrossel { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 20px; z-index: 5; display: flex; align-items: center; justify-content: center; }
-.seta-carrossel:hover { background: rgba(229,9,20,0.8); }
-.seta-esquerda { left: 5px; }
-.seta-direita { right: 5px; }
-        .card .rank { position: absolute; top: 0; left: 0; background: #E50914; color: #fff; font-size: 13px; font-weight: bold; padding: 3px 10px; border-bottom-right-radius: 6px; }
-        .btn-assistir { display: inline-block; background-color: #E50914; color: #fff; text-decoration: none; padding: 6px 12px; border-radius: 4px; margin-top: 8px; font-size: 13px; font-weight: bold; }
-        .perfil-modal { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.85); z-index:200; align-items:center; justify-content:center; }
-.perfil-modal.mostrar { display:flex; }
-.perfil-modal-conteudo { background:#181818; border-radius:10px; padding:32px; width:90%; max-width:480px; max-height:85vh; overflow-y:auto; position:relative; color:#fff; }
-.perfil-modal-fechar { position:absolute; top:16px; right:16px; background:none; border:none; color:#fff; font-size:20px; cursor:pointer; }
-.perfil-modal-header { display:flex; align-items:center; gap:16px; margin-bottom:24px; }
-.perfil-modal-header img { width:70px; height:70px; border-radius:50%; object-fit:cover; }
-.perfil-modal-header h2 { margin:0; font-size:20px; }
-.perfil-modal-header p { margin:4px 0 0; color:#aaa; font-size:14px; }
-.perfil-modal-secao { border-top:1px solid #333; padding-top:20px; margin-top:20px; }
-.perfil-modal-secao h3 { margin:0 0 8px; font-size:16px; }
-.perfil-modal-dica { color:#aaa; font-size:13px; margin-bottom:12px; }
-.perfil-modal-foto-form { display:flex; gap:8px; }
-.perfil-modal-foto-form input { flex:1; padding:10px; border-radius:4px; border:1px solid #444; background:#2f2f2f; color:#fff; }
-.perfil-modal-foto-form button { padding:10px 16px; border:none; border-radius:4px; background:#E50914; color:#fff; cursor:pointer; font-weight:bold; }
-.perfil-modal-foto-form button:hover { background:#f6121d; }
-#msg-foto-status { margin-top:8px; font-size:13px; min-height:16px; }
-.perfil-modal-sair { width:100%; margin-top:24px; padding:12px; border:1px solid #444; background:transparent; color:#fff; border-radius:4px; cursor:pointer; }
-.perfil-modal-sair:hover { background:#333; }
-@media (max-width: 768px) {
-    .sidebar {
-        top: auto;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
-        height: 64px;
-        flex-direction: row;
-        align-items: center;
-        padding: 0;
-        overflow: visible;
-        z-index: 200;
-    }
-    .sidebar:hover { width: 100%; }
-    .sidebar-logo {
-        position: fixed;
-        top: 10px;
-        left: 14px;
-        margin-bottom: 0;
-        padding: 0;
-        z-index: 201;
-    }
-    .sidebar-logo .nome-completo { display: none; }
-    .sidebar-nav {
-        flex-direction: row;
-        justify-content: space-around;
-        width: 100%;
-        gap: 0;
-    }
-    .sidebar-item {
-        flex-direction: column;
-        align-items: center;
-        padding: 6px 4px;
-        gap: 2px;
-        width: auto;
-    }
-    .sidebar-item .icone { font-size: 20px; }
-    .sidebar-item .label {
-        opacity: 1;
-        font-size: 10px;
-    }
-    .sidebar-perfil {
-        position: fixed;
-        top: 8px;
-        right: 14px;
-        z-index: 201;
-    }
-    .sidebar-perfil img {
-        width: 32px;
-        height: 32px;
-    }
-    .conteudo {
-        margin-left: 0;
-        width: 100%;
-        padding-bottom: 70px;
-    }
-        .categorias {
-        left: 10px;
-        right: 10px;
-        max-width: none;
-    }
-    .banner {
-        padding: 20px 20px 90px 20px;
-        min-height: 50vh;
-    }
-    .banner-logo-img {
-        max-height: 70px;
-    }
-    .banner-titulo {
-        font-size: 24px;
-        margin-bottom: 8px;
-    }
-    .banner-conteudo p {
-        font-size: 12px;
-        line-height: 1.4;
-        margin-bottom: 8px;
-    }
-    .banner-rating {
-        font-size: 12px;
-        margin-bottom: 12px;
-    }
-    .banner-botoes {
-        gap: 8px;
-    }
-    .btn-assistir-grande, .btn-trailer {
-        padding: 8px 16px;
-        font-size: 13px;
-    }
-}
     </style>
 </head>
 <body>
 
-    <aside class="sidebar">
-        <div class="sidebar-logo">
-            <span class="badge">LC</span>
-            <span class="nome-completo">LORD-CINE</span>
+    <aside class="sidebar" style="position: fixed; top: 0; left: 0; bottom: 0; width: 80px; background: #000; border-right: 1px solid #222; display: flex; flex-direction: column; align-items: flex-start; padding: 20px 0; z-index: 100;">
+        <div class="sidebar-logo" style="display: flex; align-items: center; gap: 10px; padding: 0 18px; margin-bottom: 30px;">
+            <span class="badge" style="width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold;">PK</span>
+            <span class="nome-completo" style="color: #fff; font-weight: bold; font-size: 16px;">PK FILMES</span>
         </div>
-        <nav class="sidebar-nav">
-            <a href="index.html" class="sidebar-item ativo"><span class="icone">🏠</span><span class="label">Início</span></a>
-            <button class="sidebar-item" id="btn-busca-sidebar"><span class="icone">🔍</span><span class="label">Pesquisar</span></button>
-            <button class="sidebar-item" id="btn-categorias"><span class="icone">🎬</span><span class="label">Catálogo</span></button>
-            <a href="agenda.html" class="sidebar-item"><span class="icone">📅</span><span class="label">Agenda</span></a>
-            <button class="sidebar-item" id="btn-perfil-sidebar"><span class="icone">👤</span><span class="label">Meu Perfil</span></button>
+        <nav class="sidebar-nav" style="display: flex; flex-direction: column; gap: 10px; flex: 1; width: 100%;">
+            <a href="index.html" class="sidebar-item ativo" style="display: flex; align-items: center; gap: 16px; padding: 10px 18px; color: #fff; text-decoration: none;"><span class="icone">🏠</span><span class="label">Início</span></a>
+            <a href="catalogo.html" class="sidebar-item" style="display: flex; align-items: center; gap: 16px; padding: 10px 18px; color: #999; text-decoration: none;"><span class="icone">🎬</span><span class="label">Catálogo</span></a>
+            <a href="agenda.html" class="sidebar-item" style="display: flex; align-items: center; gap: 16px; padding: 10px 18px; color: #999; text-decoration: none;"><span class="icone">📅</span><span class="label">Agenda</span></a>
+            <a href="perfil.html" class="sidebar-item" style="display: flex; align-items: center; gap: 16px; padding: 10px 18px; color: #999; text-decoration: none;"><span class="icone">👤</span><span class="label">Perfil</span></a>
         </nav>
-        <div class="sidebar-perfil" id="user-info">
-            <img id="user-foto" src="" alt="Perfil">
-        </div>
     </aside>
 
-    <div class="perfil-modal" id="perfil-modal">
-        <div class="perfil-modal-conteudo">
-            <button class="perfil-modal-fechar" id="btn-fechar-perfil">✕</button>
-            <div class="perfil-modal-header">
-                <img id="perfil-modal-foto" src="" alt="Foto de perfil">
-                <div>
-                    <h2 id="perfil-modal-nome"></h2>
-                    <p id="perfil-modal-email"></p>
-                </div>
-            </div>
-
-            <div class="perfil-modal-secao">
-                <h3>Alterar foto de perfil</h3>
-                <p class="perfil-modal-dica">Cole o link de uma imagem (do Google Fotos, Imgur, etc.)</p>
-                <div class="perfil-modal-foto-form">
-                    <input type="text" id="input-foto-url" placeholder="https://...">
-                    <button id="btn-salvar-foto">Salvar</button>
-                </div>
-                <p id="msg-foto-status"></p>
-            </div>
-
-            <div class="perfil-modal-secao">
-                <p class="dropdown-titulo">Suporte e Comunidade</p>
-                <a href="https://chat.whatsapp.com/Ilj8Aq7M2443DPlSLWlmmF?s=cl&p=a&mlu=4&ilr=4" target="_blank" class="dropdown-link">💬 Grupo de Bate-papo</a>
-                <a href="https://chat.whatsapp.com/BbLCtumfzqTIF2lf3twymy?s=cl&p=a&mlu=4&ilr=4" target="_blank" class="dropdown-link">📝 Alternativos para Pedidos</a>
-            </div>
-
-            <button id="btn-logout" class="perfil-modal-sair">Sair da conta</button>
-        </div>
-    </div>
-
     <div class="conteudo">
-        <div class="busca-overlay" id="busca-overlay">
-            <input type="text" id="busca-input" placeholder="Pesquisar filmes...">
-        </div>
-
-        <div class="categorias-wrapper">
-            <nav class="categorias" id="categorias-nav"></nav>
-        </div>
-
-        <div class="banner" id="banner-destaque">
-            <div class="banner-conteudo">
-                <h1 id="banner-titulo">Carregando...</h1>
-                <p id="banner-sinopse"></p>
-                <div class="banner-rating" id="banner-rating"></div>
-                <div class="banner-botoes">
-                    <a href="#" id="banner-assistir" class="btn-assistir-grande">▶ Assistir Agora</a>
-                    <a href="#" id="banner-trailer" class="btn-trailer">🎥 Detalhes</a>
+        <div class="banner" id="banner-destaque" style="position: relative; min-height: 60vh; display: flex; align-items: flex-end; padding: 40px; background-color: #000; background-size: cover; background-position: center;">
+            <div class="banner-conteudo" style="max-width: 600px;">
+                <h1 id="banner-titulo" style="font-size: 34px; margin-bottom: 12px; color: #fff;">Fúria</h1>
+                <p id="banner-sinopse" style="color: #ddd; font-size: 14px; margin-bottom: 12px;">Durante o final da Segunda Guerra Mundial, um grupo de soldados enfrenta inimigos na Alemanha...</p>
+                <div class="banner-rating" style="margin-bottom: 18px; font-weight: bold;">★★★★★ 7.5</div>
+                <div class="banner-botoes" style="display: flex; gap: 12px;">
+                    <a href="detalhes.html?id=furia" class="btn-assistir-grande" style="padding: 12px 26px; text-decoration: none; display: inline-block;">▶ Assistir Agora</a>
+                    <a href="#" class="btn-trailer" style="background: rgba(255,255,255,0.15); color: #fff; padding: 12px 26px; border-radius: 6px; text-decoration: none; font-weight: bold;">🎥 Trailer</a>
                 </div>
             </div>
         </div>
 
-        <div class="secao" id="secao-continuar" style="display:none;">
-            <h2>Continuar assistindo</h2>
-            <div class="carrossel" id="continuar-container"></div>
-        </div>
-
-        <div class="secao">
-            <h2>Top 10</h2>
-            <div class="carrossel" id="top100-container"></div>
-        </div>
-
-        <div class="secao">
-            <h2>Filmes Populares</h2>
-            <div class="carrossel" id="filmes-container"></div>
+        <div class="secao" style="padding: 20px 30px;">
+            <h2 style="font-size: 18px; margin-bottom: 10px; color: #fff;">Filmes Populares</h2>
+            <div class="carrossel" id="filmes-container" style="display: flex; gap: 15px; overflow-x: auto;"></div>
         </div>
     </div>
 
