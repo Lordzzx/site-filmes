@@ -200,3 +200,7 @@ document.getElementById("btn-logout").addEventListener("click", () => {
     window.location.href = "perfis.html";
   });
 });
+
+document.getElementById("btn-perfil-sidebar").addEventListener("click", () => {
+  document.getElementById("user-dropdown").classList.toggle("mostrar");
+});
