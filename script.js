@@ -84,6 +84,7 @@ auth.onAuthStateChanged((user) => {
 
   document.getElementById("user-nome").innerText = user.displayName;
   document.getElementById("user-foto").src = user.photoURL;
+  document.getElementById("user-foto-dropdown").src = user.photoURL;
   document.getElementById("user-info").style.display = "flex";
 
   db.ref("Filmes").on("value", (snapshot) => {
