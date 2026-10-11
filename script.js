@@ -63,7 +63,11 @@ function selecionarDestaque(filme) {
   document.getElementById("banner-trailer").href = `detalhes.html?id=${filme.id}`;
 
   const banner = document.getElementById("banner-destaque");
-  banner.style.backgroundImage = `linear-gradient(90deg, rgba(0,0,0,0.97) 0%, rgba(0,0,0,0.97) 45%, rgba(0,0,0,0) 85%), url('${filme.Fundo || filme.Capa}')`;
+  const ehCelular = window.innerWidth <= 768;
+  const gradiente = ehCelular
+    ? `linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 35%, rgba(0,0,0,0.75) 65%, rgba(0,0,0,0.95) 100%)`
+    : `linear-gradient(90deg, rgba(0,0,0,0.97) 0%, rgba(0,0,0,0.97) 45%, rgba(0,0,0,0) 85%)`;
+  banner.style.backgroundImage = `${gradiente}, url('${filme.Fundo || filme.Capa}')`;
 }
 
 function renderizarFilmes() {
