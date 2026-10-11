@@ -64,7 +64,11 @@
                         document.getElementById("filme-titulo").innerText = "Filme não encontrado.";
                         return;
                     }
-
+                    let historico = JSON.parse(localStorage.getItem("continuarAssistindo") || "[]");
+                    historico = historico.filter((itemId) => itemId !== id);
+                    historico.unshift(id);
+                    historico = historico.slice(0, 10);
+                    localStorage.setItem("continuarAssistindo", JSON.stringify(historico));
                     document.getElementById("filme-titulo").innerText = "Assistindo: " + filme.Titulo;
                     document.getElementById("filme-ano").innerText = filme.Ano;
                     document.getElementById("filme-genero").innerText = filme.Genero;

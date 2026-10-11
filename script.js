@@ -14,11 +14,25 @@ const db = firebase.database();
 const auth = firebase.auth();
 
 const container = document.getElementById("filmes-container");
+const top100Container = document.getElementById("top100-container");
+const continuarContainer = document.getElementById("continuar-container");
+const secaoContinuar = document.getElementById("secao-continuar");
 const categoriasNav = document.getElementById("categorias-nav");
 const buscaInput = document.getElementById("busca-input");
 
 let todosFilmes = [];
 let categoriaAtiva = "todos";
+
+function criarCard(filme, rank) {
+  const card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML = `
+    ${rank ? `<span class="rank">#${rank}</span>` : ""}
+    <img src="${filme.Capa}" alt="${filme.Titulo}">
+    <a href="detalhes.html?id=${filme.id}" class="btn-assistir">Ver Detalhes</a>
+  `;
+  return card;
+}
 
 function renderizarFilmes() {
   const termoBusca = buscaInput.value.trim().toLowerCase();
@@ -37,13 +51,35 @@ function renderizarFilmes() {
   }
 
   filtrados.forEach((filme) => {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <img src="${filme.Capa}" alt="${filme.Titulo}">
-      <a href="detalhes.html?id=${filme.id}" class="btn-assistir">Ver Detalhes</a>
-    `;
-    container.appendChild(card);
+    container.appendChild(criarCard(filme));
+  });
+}
+
+function renderizarTop100() {
+  const ordenados = [...todosFilmes].sort((a, b) => (b.Popularidade || 0) - (a.Popularidade || 0));
+  const top10 = ordenados.slice(0, 10);
+
+  top100Container.innerHTML = "";
+  top10.forEach((filme, index) => {
+    top100Container.appendChild(criarCard(filme, index + 1));
+  });
+}
+
+function renderizarContinuarAssistindo() {
+  const historico = JSON.parse(localStorage.getItem("continuarAssistindo") || "[]");
+  const filmesHistorico = historico
+    .map((id) => todosFilmes.find((f) => f.id === id))
+    .filter(Boolean);
+
+  if (filmesHistorico.length === 0) {
+    secaoContinuar.style.display = "none";
+    return;
+  }
+
+  secaoContinuar.style.display = "block";
+  continuarContainer.innerHTML = "";
+  filmesHistorico.forEach((filme) => {
+    continuarContainer.appendChild(criarCard(filme));
   });
 }
 
@@ -99,6 +135,8 @@ auth.onAuthStateChanged((user) => {
 
     montarCategorias();
     renderizarFilmes();
+    renderizarTop100();
+    renderizarContinuarAssistindo();
   }, (error) => {
     console.error("Erro ao carregar filmes do Firebase:", error);
   });
