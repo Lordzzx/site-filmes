@@ -22,6 +22,7 @@
         <div class="info">
             <p><strong>Ano:</strong> <span id="filme-ano"></span></p>
             <p><strong>Gênero:</strong> <span id="filme-genero"></span></p>
+            <p><strong>Duração:</strong> <span id="filme-duracao"></span></p>
             <p><strong>Sinopse:</strong> <span id="filme-sinopse"></span></p>
         </div>
         <br>
@@ -33,10 +34,10 @@
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyCxkJCD8HENp0jk2ZwU0mLDhTi9zWd5WeM",
-            authDomain: "LORDCINE-9a4e6.firebaseapp.com",
-            databaseURL: "https://LORDCINE-9a4e6-default-rtdb.firebaseio.com",
-            projectId: "LORDCINE-9a4e6",
-            storageBucket: "LORDCINE-9a4e6.firebasestorage.app",
+            authDomain: "netdev-9a4e6.firebaseapp.com",
+            databaseURL: "https://netdev-9a4e6-default-rtdb.firebaseio.com",
+            projectId: "netdev-9a4e6",
+            storageBucket: "netdev-9a4e6.firebasestorage.app",
             messagingSenderId: "612992618514",
             appId: "1:612992618514:web:36011d43647ea6d42fc8cb",
             measurementId: "G-M9H44B2LV1"
@@ -72,6 +73,7 @@
                     document.getElementById("filme-titulo").innerText = "Assistindo: " + filme.Titulo;
                     document.getElementById("filme-ano").innerText = filme.Ano;
                     document.getElementById("filme-genero").innerText = filme.Genero;
+                    document.getElementById("filme-duracao").innerText = filme.Duracao || "";
                     document.getElementById("filme-sinopse").innerText = filme.Sinopse;
 
                     const videoContainer = document.getElementById("video-container");

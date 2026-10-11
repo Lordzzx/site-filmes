@@ -52,7 +52,8 @@ function gerarEstrelas(nota) {
 function selecionarDestaque(filme) {
   document.getElementById("banner-titulo").innerText = filme.Titulo;
   document.getElementById("banner-sinopse").innerText = filme.Sinopse || "";
-  document.getElementById("banner-rating").innerText = filme.Nota ? `${gerarEstrelas(filme.Nota)}  ${filme.Nota}` : "";
+  const duracaoTexto = filme.Duracao ? ` · ${filme.Duracao}` : "";
+  document.getElementById("banner-rating").innerText = filme.Nota ? `${gerarEstrelas(filme.Nota)}  ${filme.Nota}${duracaoTexto}` : (filme.Duracao || "");
   document.getElementById("banner-assistir").href = `detalhes.html?id=${filme.id}`;
   document.getElementById("banner-trailer").href = `detalhes.html?id=${filme.id}`;
 
