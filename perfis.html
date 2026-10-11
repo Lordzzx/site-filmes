@@ -2,41 +2,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LORDCINE - Entrar</title>
+    <title>LORD-CINE</title>
     <style>
         body {
-            background-color: #141414;
-            color: #fff;
-            font-family: Arial, sans-serif;
-            text-align: center;
             margin: 0;
             min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: radial-gradient(circle at top, #2b0a0a 0%, #141414 55%, #000000 100%);
+            color: #fff;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
         }
-        h1 { font-size: 28px; margin-bottom: 30px; }
+        .logo {
+            color: #E50914;
+            font-size: 36px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        h1 {
+            font-size: 30px;
+            margin: 10px 0 8px 0;
+        }
+        .subtitulo {
+            color: #ccc;
+            font-size: 16px;
+            margin-bottom: 40px;
+            max-width: 320px;
+        }
         .btn-google {
             display: flex;
             align-items: center;
-            gap: 10px;
-            background: #fff;
-            color: #333;
-            padding: 12px 24px;
-            border-radius: 6px;
+            gap: 12px;
+            background: linear-gradient(90deg, #E50914, #ff4d4d);
+            color: #fff;
+            padding: 16px 36px;
+            border-radius: 30px;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 17px;
             cursor: pointer;
             border: none;
+            box-shadow: 0 0 20px rgba(229, 9, 20, 0.5);
+            transition: transform 0.2s, box-shadow 0.2s;
+            animation: pulse 2s infinite;
         }
-        .btn-google:hover { background: #eee; }
-        .btn-google img { width: 20px; height: 20px; }
-        #perfil-info { margin-top: 20px; color: #aaa; }
+        .btn-google:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(229, 9, 20, 0.8);
+        }
+        .btn-google img {
+            width: 22px;
+            height: 22px;
+            background: #fff;
+            border-radius: 50%;
+            padding: 2px;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 20px rgba(229, 9, 20, 0.5); }
+            50% { box-shadow: 0 0 35px rgba(229, 9, 20, 0.9); }
+            100% { box-shadow: 0 0 20px rgba(229, 9, 20, 0.5); }
+        }
+        #perfil-info { margin-top: 20px; color: #f88; font-size: 14px; }
     </style>
 </head>
 <body>
-    <h1>Entrar no LORDCINE</h1>
+    <div class="logo">LORD-CINE</div>
+    <h1>Entre no LORD-CINE</h1>
+    <p class="subtitulo">Filmes e séries em um só lugar. É só entrar com sua conta Google.</p>
     <button class="btn-google" id="btn-login">
         <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
         Entrar com Google
@@ -49,10 +85,10 @@
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyCxkJCD8HENp0jk2ZwU0mLDhTi9zWd5WeM",
-            authDomain: "LORDCINE-9a4e6.firebaseapp.com",
-            databaseURL: "https://LORDCINE-9a4e6-default-rtdb.firebaseio.com",
-            projectId: "LORDCINE-9a4e6",
-            storageBucket: "LORDCINE-9a4e6.firebasestorage.app",
+            authDomain: "netdev-9a4e6.firebaseapp.com",
+            databaseURL: "https://netdev-9a4e6-default-rtdb.firebaseio.com",
+            projectId: "netdev-9a4e6",
+            storageBucket: "netdev-9a4e6.firebasestorage.app",
             messagingSenderId: "612992618514",
             appId: "1:612992618514:web:36011d43647ea6d42fc8cb",
             measurementId: "G-M9H44B2LV1"
