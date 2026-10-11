@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lord-Cine Brasil - Assistir a séries online, assistir a filmes online</title>
+    <title>LORD-CINE - Assistir a séries online, assistir a filmes online</title>
     <style>
         * {
             box-sizing: border-box;
@@ -111,7 +111,7 @@
             font-size: 1.2rem;
         }
 
-        /* Estilos do FAQ interativo */
+        /* FAQ */
         .faq-container {
             max-width: 900px;
             margin: 0 auto;
@@ -141,7 +141,6 @@
             transition: max-height 0.3s ease, padding 0.3s ease;
             border-top: 1px solid transparent;
         }
-        /* Classe ativada via JavaScript para abrir o FAQ */
         .faq-item.active .faq-answer {
             max-height: 200px;
             padding: 20px;
@@ -177,13 +176,13 @@
 
     <div class="hero">
         <div class="nav">
-            <div class="logo">Lord-Cine</div>
-            <a href="https://www.Lord-Cine.com/br/" class="btn-entrar">Entrar</a>
+            <div class="logo">LORD-CINE</div>
+            <a href="#" class="btn-entrar">Entrar</a>
         </div>
         <div class="hero-content">
             <h1>Mais tempo assistindo. Menos tempo buscando.</h1>
             <p>A partir de R$ 20,90. Cancele quando quiser.</p>
-            <p>Quer assistir? Informe seu email para criar ou reiniciar sua assinatura.</p>
+            <p>Quer assistir? Informe seu email para criar ou reiniciar sua assinatura no LORD-CINE.</p>
             <div class="signup-form">
                 <input type="email" placeholder="E-mail">
                 <button>Vamos lá &gt;</button>
@@ -202,25 +201,24 @@
         </div>
     </section>
 
-    <!-- Seção de Perguntas Frequentes Interativa -->
     <section>
         <h2>Perguntas frequentes</h2>
         <div class="faq-container">
             <div class="faq-item">
-                <div class="faq-question">O que é a Lord-Cine? <span>+</span></div>
-                <div class="faq-answer">A Lord-Cine é um serviço de streaming que oferece uma ampla variedade de séries, filmes e documentários em milhares de aparelhos conectados à internet. Você pode assistir a quanto quiser, quando quiser, sem comerciais – tudo por um preço mensal acessível.</div>
+                <div class="faq-question">O que é o LORD-CINE? <span>+</span></div>
+                <div class="faq-answer">O LORD-CINE é um serviço de streaming que oferece uma ampla variedade de séries, filmes e documentários em milhares de aparelhos conectados à internet. Você pode assistir a quanto quiser, quando quiser, sem comerciais – tudo por um preço mensal acessível.</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">Quanto custa a Lord-Cine? <span>+</span></div>
-                <div class="faq-answer">Assista à Lord-Cine no seu celular, tablet, Smart TV, notebook ou aparelho de streaming por uma taxa mensal única. Os planos vão de R$ 20,90 a R$ 55,90 por mês. Sem contrato nem taxas extras.</div>
+                <div class="faq-question">Quanto custa o LORD-CINE? <span>+</span></div>
+                <div class="faq-answer">Assista ao LORD-CINE no seu celular, tablet, Smart TV, notebook ou aparelho de streaming por uma taxa mensal única. Os planos vão de R$ 20,90 a R$ 55,90 por mês. Sem contrato nem taxas extras.</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">Onde posso assistir? <span>+</span></div>
-                <div class="faq-answer">Assista onde quiser, quando quiser. Faça login com sua conta Lord-Cine em Lord-Cine.com para começar a assistir no computador ou em qualquer aparelho conectado à internet que ofereça o aplicativo Lord-Cine.</div>
+                <div class="faq-question">Onde posso assistir ao LORD-CINE? <span>+</span></div>
+                <div class="faq-answer">Assista onde quiser, quando quiser. Faça login com sua conta LORD-CINE para começar a assistir no computador ou em qualquer aparelho conectado à internet que ofereça o aplicativo.</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">Como faço para cancelar? <span>+</span></div>
-                <div class="faq-answer">A Lord-Cine é flexível. Não há contratos nem compromissos. Você pode cancelar a sua conta na internet com apenas dois cliques. Não há taxa de cancelamento – você pode começar ou parar a sua assinatura a qualquer momento.</div>
+                <div class="faq-question">Como faço para cancelar o LORD-CINE? <span>+</span></div>
+                <div class="faq-answer">O LORD-CINE é flexível. Não há contratos nem compromissos. Você pode cancelar a sua conta na internet com apenas dois cliques. Não há taxa de cancelamento.</div>
             </div>
         </div>
     </section>
@@ -228,27 +226,24 @@
     <footer>
         <p>Dúvidas? Ligue para 0800 591 8943</p>
         <div class="footer-links">
-            <a href="https://www.Lord-Cine.com/br/">Perguntas frequentes</a>
-            <a href="https://www.Lord-Cine.com/br/">Central de Ajuda</a>
-            <a href="https://www.Lord-Cine.com/br/">Conta</a>
-            <a href="https://www.Lord-Cine.com/br/">Termos de Uso</a>
+            <a href="#">Perguntas frequentes</a>
+            <a href="#">Central de Ajuda</a>
+            <a href="#">Conta</a>
+            <a href="#">Termos de Uso</a>
         </div>
     </footer>
 
-    <!-- Script de Interatividade -->
     <script>
         const faqItems = document.querySelectorAll('.faq-item');
 
         faqItems.forEach(item => {
             const question = item.querySelector('.faq-question');
             question.addEventListener('click', () => {
-                // Fecha os outros itens abertos (opcional)
                 faqItems.forEach(otherItem => {
                     if (otherItem !== item) {
                         otherItem.classList.remove('active');
                     }
                 });
-                // Alterna o estado do item clicado
                 item.classList.toggle('active');
             });
         });
