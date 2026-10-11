@@ -37,6 +37,20 @@
             font-weight: bold;
             letter-spacing: 2px;
         }
+        .nav-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .language-select {
+            background: rgba(0, 0, 0, 0.4);
+            color: #fff;
+            border: 1px solid #aaa;
+            padding: 7px 15px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
         .btn-entrar {
             background-color: #E50914;
             color: #fff;
@@ -46,6 +60,9 @@
             font-weight: bold;
             cursor: pointer;
             text-decoration: none;
+        }
+        .btn-entrar:hover, .signup-form button:hover {
+            background-color: #f40612;
         }
         .hero-content {
             text-align: center;
@@ -177,15 +194,22 @@
     <div class="hero">
         <div class="nav">
             <div class="logo">LORD-CINE</div>
-            <a href="#" class="btn-entrar">Entrar</a>
+            <div class="nav-actions">
+                <select class="language-select" id="langSelect">
+                    <option value="pt">Português</option>
+                    <option value="en">English</option>
+                </select>
+                <button class="btn-entrar" id="btnLogin">Entrar</button>
+            </div>
         </div>
         <div class="hero-content">
             <h1>Mais tempo assistindo. Menos tempo buscando.</h1>
             <p>A partir de R$ 20,90. Cancele quando quiser.</p>
             <p>Quer assistir? Informe seu email para criar ou reiniciar sua assinatura no LORD-CINE.</p>
+            
             <div class="signup-form">
-                <input type="email" placeholder="E-mail">
-                <button>Vamos lá &gt;</button>
+                <input type="email" id="emailInput" placeholder="E-mail">
+                <button id="btnSubmit">Vamos lá &gt;</button>
             </div>
         </div>
     </div>
@@ -233,9 +257,10 @@
         </div>
     </footer>
 
+    <!-- Script com todos os botões funcionando -->
     <script>
+        // 1. Interatividade do FAQ (Abrir e Fechar perguntas)
         const faqItems = document.querySelectorAll('.faq-item');
-
         faqItems.forEach(item => {
             const question = item.querySelector('.faq-question');
             question.addEventListener('click', () => {
@@ -246,6 +271,37 @@
                 });
                 item.classList.toggle('active');
             });
+        });
+
+        // 2. Botão "Vamos lá" (Validação de E-mail)
+        const btnSubmit = document.getElementById('btnSubmit');
+        const emailInput = document.getElementById('emailInput');
+
+        btnSubmit.addEventListener('click', () => {
+            const emailValue = emailInput.value.trim();
+            if (emailValue === '' || !emailValue.includes('@')) {
+                alert('Por favor, insira um e-mail válido para continuar no LORD-CINE!');
+                emailInput.focus();
+            } else {
+                alert('E-mail cadastrado com sucesso! Bem-vindo ao LORD-CINE, ' + emailValue);
+                emailInput.value = '';
+            }
+        });
+
+        // 3. Botão "Entrar" do topo
+        const btnLogin = document.getElementById('btnLogin');
+        btnLogin.addEventListener('click', () => {
+            alert('Redirecionando para a tela de login do LORD-CINE...');
+        });
+
+        // 4. Seletor de Idioma
+        const langSelect = document.getElementById('langSelect');
+        langSelect.addEventListener('change', (e) => {
+            if (e.target.value === 'en') {
+                alert('Idioma alterado para Inglês (Simulação).');
+            } else {
+                alert('Idioma alterado para Português.');
+            }
         });
     </script>
 </body>
