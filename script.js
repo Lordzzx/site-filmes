@@ -55,49 +55,33 @@ function selecionarDestaque(filme) {
 
 function renderizarFilmes() {
   const termoBusca = buscaInput.value.trim().toLowerCase();
-
   const filtrados = todosFilmes.filter((filme) => {
     const bateCategoria = categoriaAtiva === "todos" || filme.Genero === categoriaAtiva;
     const bateBusca = (filme.Titulo || "").toLowerCase().includes(termoBusca);
     return bateCategoria && bateBusca;
   });
-
   container.innerHTML = "";
-
   if (filtrados.length === 0) {
     container.innerHTML = "<p style='color:#aaa;'>Nenhum filme encontrado.</p>";
     return;
   }
-
-  filtrados.forEach((filme) => {
-    container.appendChild(criarCard(filme));
-  });
+  filtrados.forEach((filme) => { container.appendChild(criarCard(filme)); });
 }
 
 function renderizarTop100() {
   const ordenados = [...todosFilmes].sort((a, b) => (b.Popularidade || 0) - (a.Popularidade || 0));
   const top10 = ordenados.slice(0, 10);
-
   top100Container.innerHTML = "";
-  top10.forEach((filme, index) => {
-    top100Container.appendChild(criarCard(filme, index + 1));
-  });
+  top10.forEach((filme, index) => { top100Container.appendChild(criarCard(filme, index + 1)); });
 }
 
 function renderizarContinuarAssistindo() {
   const historico = JSON.parse(localStorage.getItem("continuarAssistindo") || "[]");
   const filmesHistorico = historico.map((id) => todosFilmes.find((f) => f.id === id)).filter(Boolean);
-
-  if (filmesHistorico.length === 0) {
-    secaoContinuar.style.display = "none";
-    return;
-  }
-
+  if (filmesHistorico.length === 0) { secaoContinuar.style.display = "none"; return; }
   secaoContinuar.style.display = "block";
   continuarContainer.innerHTML = "";
-  filmesHistorico.forEach((filme) => {
-    continuarContainer.appendChild(criarCard(filme));
-  });
+  filmesHistorico.forEach((filme) => { continuarContainer.appendChild(criarCard(filme)); });
 }
 
 function renderizarBanner() {
@@ -108,15 +92,12 @@ function renderizarBanner() {
 
 function montarCategorias() {
   const generos = [...new Set(todosFilmes.map((f) => f.Genero).filter(Boolean))];
-
   categoriasNav.innerHTML = "";
-
   const btnTodos = document.createElement("button");
   btnTodos.className = "cat-btn ativo";
   btnTodos.textContent = "Todos";
   btnTodos.dataset.genero = "todos";
   categoriasNav.appendChild(btnTodos);
-
   generos.forEach((genero) => {
     const btn = document.createElement("button");
     btn.className = "cat-btn";
@@ -124,7 +105,6 @@ function montarCategorias() {
     btn.dataset.genero = genero;
     categoriasNav.appendChild(btn);
   });
-
   categoriasNav.querySelectorAll(".cat-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       categoriasNav.querySelectorAll(".cat-btn").forEach((b) => b.classList.remove("ativo"));
@@ -136,41 +116,41 @@ function montarCategorias() {
   });
 }
 
-auth.onAuthStateChanged((user) => {
-  if (!user) {
-    window.location.href = "perfis.html";
-    return;
-  }
+function carregarDadosPerfil(user) {
+  db.ref("Perfis/" + user.uid).once("value").then((snap) => {
+    const perfil = snap.val() || {};
+    const fotoFinal = perfil.FotoCustom || user.photoURL;
 
-  document.getElementById("user-nome").innerText = user.displayName;
-  document.getElementById("user-foto").src = user.photoURL;
-  document.getElementById("user-foto-dropdown").src = user.photoURL;
-  document.getElementById("user-foto").style.display = "block";
+    document.getElementById("user-foto").src = fotoFinal;
+    document.getElementById("user-foto").style.display = "block";
+
+    document.getElementById("perfil-modal-foto").src = fotoFinal;
+    document.getElementById("perfil-modal-nome").innerText = user.displayName || "";
+    document.getElementById("perfil-modal-email").innerText = user.email || "";
+  });
+}
+
+auth.onAuthStateChanged((user) => {
+  if (!user) { window.location.href = "perfis.html"; return; }
+
+  carregarDadosPerfil(user);
 
   db.ref("Filmes").on("value", (snapshot) => {
     todosFilmes = [];
-
     snapshot.forEach((filmeSnap) => {
       const filme = filmeSnap.val();
       filme.id = filmeSnap.key;
       todosFilmes.push(filme);
     });
-
     montarCategorias();
     renderizarFilmes();
     renderizarTop100();
     renderizarContinuarAssistindo();
     renderizarBanner();
-  }, (error) => {
-    console.error("Erro ao carregar filmes do Firebase:", error);
-  });
+  }, (error) => { console.error("Erro ao carregar filmes do Firebase:", error); });
 });
 
 buscaInput.addEventListener("input", renderizarFilmes);
-
-document.getElementById("user-foto").addEventListener("click", () => {
-  document.getElementById("user-dropdown").classList.toggle("mostrar");
-});
 
 document.getElementById("btn-categorias").addEventListener("click", () => {
   categoriasNav.classList.toggle("mostrar");
@@ -183,11 +163,6 @@ document.getElementById("btn-busca-sidebar").addEventListener("click", () => {
 });
 
 document.addEventListener("click", (e) => {
-  const userInfo = document.getElementById("user-info");
-  if (!userInfo.contains(e.target)) {
-    document.getElementById("user-dropdown").classList.remove("mostrar");
-  }
-
   const catWrapper = document.querySelector(".categorias-wrapper");
   const btnCategorias = document.getElementById("btn-categorias");
   if (catWrapper && !catWrapper.contains(e.target) && !btnCategorias.contains(e.target)) {
@@ -196,11 +171,45 @@ document.addEventListener("click", (e) => {
 });
 
 document.getElementById("btn-logout").addEventListener("click", () => {
-  auth.signOut().then(() => {
-    window.location.href = "perfis.html";
-  });
+  auth.signOut().then(() => { window.location.href = "perfis.html"; });
 });
 
-document.getElementById("btn-perfil-sidebar").addEventListener("click", () => {
-  document.getElementById("user-dropdown").classList.toggle("mostrar");
+function abrirPerfilModal() {
+  document.getElementById("perfil-modal").classList.add("mostrar");
+}
+
+function fecharPerfilModal() {
+  document.getElementById("perfil-modal").classList.remove("mostrar");
+}
+
+document.getElementById("btn-perfil-sidebar").addEventListener("click", abrirPerfilModal);
+document.getElementById("user-foto").addEventListener("click", abrirPerfilModal);
+document.getElementById("btn-fechar-perfil").addEventListener("click", fecharPerfilModal);
+
+document.getElementById("perfil-modal").addEventListener("click", (e) => {
+  if (e.target.id === "perfil-modal") fecharPerfilModal();
+});
+
+document.getElementById("btn-salvar-foto").addEventListener("click", () => {
+  const url = document.getElementById("input-foto-url").value.trim();
+  const msg = document.getElementById("msg-foto-status");
+  const user = auth.currentUser;
+
+  if (!url) {
+    msg.innerText = "Cole um link de imagem válido.";
+    msg.style.color = "#E50914";
+    return;
+  }
+  if (!user) return;
+
+  db.ref("Perfis/" + user.uid).update({ FotoCustom: url }).then(() => {
+    document.getElementById("user-foto").src = url;
+    document.getElementById("perfil-modal-foto").src = url;
+    document.getElementById("input-foto-url").value = "";
+    msg.innerText = "Foto atualizada com sucesso!";
+    msg.style.color = "#2ecc71";
+  }).catch(() => {
+    msg.innerText = "Erro ao salvar a foto. Tente novamente.";
+    msg.style.color = "#E50914";
+  });
 });
