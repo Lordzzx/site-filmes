@@ -97,6 +97,44 @@
             }
         }
     </style>
+    <style>
+    :root {
+        --cor-vermelho: #E50914 !important;
+        --cor-vermelho-hover: #b80710 !important;
+        --fundo-principal: #0a0a0a !important;
+    }
+
+    body, .conteudo, .banner, header, nav {
+        background-color: var(--fundo-principal) !important;
+    }
+
+    .btn-assistir-grande, .btn-assistir, a.btn-assistir, button.btn-assistir {
+        background-color: var(--cor-vermelho) !important;
+        color: #ffffff !important;
+        border: none !important;
+    }
+    .btn-assistir-grande:hover, .btn-assistir:hover {
+        background-color: var(--cor-vermelho-hover) !important;
+    }
+
+    .card.selecionado, .card:hover, .poster-item:hover {
+        outline: 2px solid var(--cor-vermelho) !important;
+        box-shadow: 0 0 15px rgba(229, 9, 20, 0.7) !important;
+        border-radius: 6px;
+    }
+
+    .badge, .card .rank, .fa-star, .rating-star, .banner-rating {
+        color: var(--cor-vermelho) !important;
+    }
+    .badge, .card .rank {
+        background-color: var(--cor-vermelho) !important;
+        color: #fff !important;
+    }
+
+    .sidebar-item:hover, .sidebar-item.ativo, nav a.ativo {
+        color: var(--cor-vermelho) !important;
+    }
+</style>
 </head>
 <body>
 
