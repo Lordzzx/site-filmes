@@ -219,4 +219,26 @@ document.getElementById("btn-salvar-foto").addEventListener("click", () => {
     msg.innerText = "Erro ao salvar a foto. Tente novamente.";
     msg.style.color = "#E50914";
   });
-}); c:\Users\Usuario\AppData\Local\Packages\MicrosoftWindows.Client.Core_cw5n1h2txyewy\TempState\ScreenClip\{4C9F0BBF-3479-4FC1-9194-90CD527ACC9F}.png
+}); function adicionarSetasCarrossel() {
+  document.querySelectorAll(".carrossel").forEach((carrossel) => {
+    const wrapper = document.createElement("div");
+    wrapper.className = "carrossel-wrapper";
+    carrossel.parentNode.insertBefore(wrapper, carrossel);
+    wrapper.appendChild(carrossel);
+
+    const btnEsq = document.createElement("button");
+    btnEsq.className = "seta-carrossel seta-esquerda";
+    btnEsq.innerHTML = "‹";
+    btnEsq.addEventListener("click", () => carrossel.scrollBy({ left: -400, behavior: "smooth" }));
+
+    const btnDir = document.createElement("button");
+    btnDir.className = "seta-carrossel seta-direita";
+    btnDir.innerHTML = "›";
+    btnDir.addEventListener("click", () => carrossel.scrollBy({ left: 400, behavior: "smooth" }));
+
+    wrapper.appendChild(btnEsq);
+    wrapper.appendChild(btnDir);
+  });
+}
+
+adicionarSetasCarrossel();
