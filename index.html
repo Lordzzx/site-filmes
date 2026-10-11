@@ -23,13 +23,27 @@
             border-right: 1px solid #222;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
             padding: 20px 0;
             z-index: 100;
+            overflow: hidden;
+            transition: width 0.25s ease;
+        }
+        .sidebar:hover {
+            width: 220px;
         }
         .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 18px;
+            margin-bottom: 30px;
+            white-space: nowrap;
+        }
+        .sidebar-logo .badge {
             width: 40px;
             height: 40px;
+            flex-shrink: 0;
             background: #E50914;
             color: #fff;
             border-radius: 8px;
@@ -38,27 +52,45 @@
             justify-content: center;
             font-weight: bold;
             font-size: 15px;
-            margin-bottom: 30px;
+        }
+        .sidebar-logo .nome-completo {
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .sidebar:hover .sidebar-logo .nome-completo {
+            opacity: 1;
         }
         .sidebar-nav {
             display: flex;
             flex-direction: column;
-            gap: 25px;
+            gap: 10px;
             flex: 1;
+            width: 100%;
         }
         .sidebar-item {
             background: none;
             border: none;
             color: #999;
-            font-size: 22px;
             cursor: pointer;
             text-decoration: none;
             display: flex;
             align-items: center;
-            justify-content: center;
-            width: 44px;
-            height: 44px;
-            border-radius: 8px;
+            gap: 16px;
+            width: 100%;
+            padding: 10px 18px;
+            white-space: nowrap;
+        }
+        .sidebar-item .icone { font-size: 22px; flex-shrink: 0; }
+        .sidebar-item .label {
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .sidebar:hover .sidebar-item .label {
+            opacity: 1;
         }
         .sidebar-item:hover, .sidebar-item.ativo {
             background: #2f2f2f;
@@ -196,12 +228,15 @@
 <body>
 
     <aside class="sidebar">
-        <div class="sidebar-logo">LC</div>
+        <div class="sidebar-logo">
+            <span class="badge">LC</span>
+            <span class="nome-completo">LORD-CINE</span>
+        </div>
         <nav class="sidebar-nav">
-            <a href="index.html" class="sidebar-item ativo" title="Início">🏠</a>
-            <button class="sidebar-item" id="btn-busca-sidebar" title="Buscar">🔍</button>
-            <button class="sidebar-item" id="btn-categorias" title="Catálogo">🎬</button>
-            <a href="agenda.html" class="sidebar-item" title="Agenda">📅</a>
+            <a href="index.html" class="sidebar-item ativo"><span class="icone">🏠</span><span class="label">Início</span></a>
+            <button class="sidebar-item" id="btn-busca-sidebar"><span class="icone">🔍</span><span class="label">Pesquisar</span></button>
+            <button class="sidebar-item" id="btn-categorias"><span class="icone">🎬</span><span class="label">Catálogo</span></button>
+            <a href="agenda.html" class="sidebar-item"><span class="icone">📅</span><span class="label">Agenda</span></a>
         </nav>
         <div class="sidebar-perfil" id="user-info">
             <img id="user-foto" src="" alt="Perfil">
