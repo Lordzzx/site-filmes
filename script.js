@@ -29,6 +29,7 @@ function criarCard(filme, rank) {
   card.innerHTML = `
     ${rank ? `<span class="rank">#${rank}</span>` : ""}
     <img src="${filme.Capa}" alt="${filme.Titulo}">
+    <p class="card-titulo">${filme.Titulo}</p>
     <a href="detalhes.html?id=${filme.id}" class="btn-assistir">Ver Detalhes</a>
   `;
 
