@@ -72,6 +72,7 @@ function montarCategorias() {
       btn.classList.add("ativo");
       categoriaAtiva = btn.dataset.genero;
       renderizarFilmes();
+      categoriasNav.classList.remove("mostrar");
     });
   });
 }
@@ -109,10 +110,25 @@ document.getElementById("user-foto").addEventListener("click", () => {
   document.getElementById("user-dropdown").classList.toggle("mostrar");
 });
 
+document.getElementById("btn-categorias").addEventListener("click", () => {
+  categoriasNav.classList.toggle("mostrar");
+});
+
+document.getElementById("nav-catalogo-inferior").addEventListener("click", (e) => {
+  e.preventDefault();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  categoriasNav.classList.add("mostrar");
+});
+
 document.addEventListener("click", (e) => {
   const userInfo = document.getElementById("user-info");
   if (!userInfo.contains(e.target)) {
     document.getElementById("user-dropdown").classList.remove("mostrar");
+  }
+
+  const catWrapper = document.querySelector(".categorias-wrapper");
+  if (catWrapper && !catWrapper.contains(e.target)) {
+    categoriasNav.classList.remove("mostrar");
   }
 });
 

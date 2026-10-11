@@ -9,7 +9,7 @@
             color: #ffffff;
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
+            padding: 0 0 70px 0;
         }
         header {
             background-color: #000000;
@@ -25,21 +25,6 @@
             font-size: 24px;
             font-weight: bold;
         }
-        .nav-principal {
-            display: flex;
-            gap: 25px;
-        }
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #ccc;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: bold;
-        }
-        .nav-item:hover { color: #fff; }
-        .nav-icone { font-size: 16px; }
         .busca input {
             background: #333;
             border: 1px solid #555;
@@ -126,12 +111,40 @@
             font-size: 13px;
         }
         .user-dropdown button:hover { background: #444; }
-        .categorias {
-            display: flex;
-            gap: 10px;
-            padding: 15px 20px 0 20px;
-            overflow-x: auto;
+        .categorias-wrapper {
+            position: relative;
+            padding: 15px 20px;
         }
+        .btn-categorias {
+            background: #2f2f2f;
+            color: #fff;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-categorias:hover { background: #444; }
+        .categorias {
+            display: none;
+            flex-wrap: wrap;
+            gap: 10px;
+            position: absolute;
+            top: 55px;
+            left: 20px;
+            background: #181818;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 15px;
+            max-width: 520px;
+            z-index: 20;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+        }
+        .categorias.mostrar { display: flex; }
         .cat-btn {
             background: #2f2f2f;
             color: #ccc;
@@ -216,17 +229,35 @@
             font-size: 13px;
             font-weight: bold;
         }
+        .nav-inferior {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #000;
+            border-top: 1px solid #222;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 50;
+        }
+        .nav-item-inferior {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            color: #ccc;
+            text-decoration: none;
+            font-size: 11px;
+        }
+        .nav-item-inferior:hover { color: #fff; }
+        .nav-item-inferior .nav-icone { font-size: 20px; }
     </style>
 </head>
 <body>
 
     <header>
         <div class="logo">LORD-CINE</div>
-        <nav class="nav-principal">
-            <a href="index.html" class="nav-item"><span class="nav-icone">🏠</span> Início</a>
-            <a href="#categorias-nav" class="nav-item"><span class="nav-icone">🎬</span> Catálogo</a>
-            <a href="agenda.html" class="nav-item"><span class="nav-icone">📅</span> Agenda</a>
-        </nav>
         <div class="busca">
             <input type="text" id="busca-input" placeholder="Pesquisar filmes...">
         </div>
@@ -247,7 +278,10 @@
         </div>
     </header>
 
-    <nav class="categorias" id="categorias-nav"></nav>
+    <div class="categorias-wrapper">
+        <button class="btn-categorias" id="btn-categorias">☰ Categorias</button>
+        <nav class="categorias" id="categorias-nav"></nav>
+    </div>
 
     <div class="banner">
         <h1>A Origem do Código</h1>
@@ -270,6 +304,12 @@
         <h2>Filmes</h2>
         <div class="carrossel" id="filmes-container"></div>
     </div>
+
+    <nav class="nav-inferior">
+        <a href="index.html" class="nav-item-inferior"><span class="nav-icone">🏠</span>Início</a>
+        <a href="#" class="nav-item-inferior" id="nav-catalogo-inferior"><span class="nav-icone">🎬</span>Catálogo</a>
+        <a href="agenda.html" class="nav-item-inferior"><span class="nav-icone">📅</span>Agenda</a>
+    </nav>
 
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database-compat.js"></script>
