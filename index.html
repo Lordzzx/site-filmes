@@ -1,178 +1,257 @@
-<html>
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PK FILMES - O Melhor do Cinema</title>
+    <title>Netflix Brasil - Assistir a séries online, assistir a filmes online</title>
     <style>
-        :root {
-            --cor-vermelho: #E50914 !important;
-            --cor-vermelho-hover: #b80710 !important;
-            --fundo-principal: #0a0a0a !important;
-            --fundo-card: #161616 !important;
-        }
-
-        * { box-sizing: border-box; }
-
-        body {
-            background-color: var(--fundo-principal) !important;
-            color: #ffffff !important;
-            font-family: Arial, sans-serif;
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #000;
+            color: #fff;
+        }
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://assets.nflxext.com/ffe/siteui/vlv3/99784e91-add6-41c8-8af9-ab23e1927a4b/5d10d182-4467-4eb0-9285-8f6412140881/BR-pt-20240311-popsignuptwoweeks-perspective_alpha_website_large.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 70vh;
             display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px 50px;
+            border-bottom: 8px solid #222;
+        }
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            color: #E50914;
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        .btn-entrar {
+            background-color: #E50914;
+            color: #fff;
+            padding: 7px 17px;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .hero-content {
+            text-align: center;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+        .hero-content h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+        }
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        .signup-form {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .signup-form input {
+            padding: 15px;
+            width: 380px;
+            border-radius: 4px;
+            border: 1px solid #8c8c8c;
+            background: rgba(0,0,0,0.4);
+            color: #fff;
+            font-size: 1rem;
+        }
+        .signup-form button {
+            background-color: #E50914;
+            color: #fff;
+            border: none;
+            padding: 0 25px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        section {
+            padding: 50px 10%;
+            border-bottom: 8px solid #222;
+        }
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        .trending-list {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding-bottom: 15px;
+        }
+        .trending-item {
+            min-width: 150px;
+            height: 220px;
+            background-color: #333;
+            border-radius: 8px;
+            display: flex;
+            align-items: flex-end;
+            padding: 10px;
+            font-weight: bold;
+            font-size: 1.2rem;
         }
 
-        .sidebar-logo .badge, .badge {
-            background: var(--cor-vermelho) !important;
-            color: #fff !important;
+        /* Estilos do FAQ interativo */
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .faq-item {
+            background-color: #303030;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+        .faq-question {
+            padding: 20px;
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-question:hover {
+            background-color: #414141;
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            background-color: #303030;
+            padding: 0 20px;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            border-top: 1px solid transparent;
+        }
+        /* Classe ativada via JavaScript para abrir o FAQ */
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+            padding: 20px;
+            border-top: 1px solid #000;
+        }
+        .faq-item.active .faq-question span {
+            transform: rotate(45deg);
+            transition: transform 0.3s ease;
+        }
+        .faq-question span {
+            font-size: 2rem;
+            transition: transform 0.3s ease;
         }
 
-        a[href*="vip"], .vip-btn {
-            background-color: var(--cor-vermelho) !important;
-            border-color: var(--cor-vermelho) !important;
-            color: #fff !important;
+        footer {
+            padding: 50px 10%;
+            color: #737373;
+            font-size: 0.9rem;
         }
-
-        .btn-assistir-grande, .btn-assistir, a.btn-assistir, button.btn-assistir, .hero-botoes a:first-child {
-            background-color: var(--cor-vermelho) !important;
-            color: #ffffff !important;
-            border: none !important;
-            font-weight: bold !important;
-            border-radius: 6px;
+        footer a {
+            color: #737373;
+            text-decoration: underline;
         }
-        .btn-assistir-grande:hover, .btn-assistir:hover, .hero-botoes a:first-child:hover {
-            background-color: var(--cor-vermelho-hover) !important;
-        }
-
-        .card, .poster-item {
-            background-color: var(--fundo-card) !important;
-        }
-        .card.selecionado, .card:hover, .poster-item:hover, .card:focus {
-            outline: 2px solid var(--cor-vermelho) !important;
-            border: 2px solid var(--cor-vermelho) !important;
-            box-shadow: 0 0 15px rgba(229, 9, 20, 0.7) !important;
-        }
-        .card .rank {
-            background: var(--cor-vermelho) !important;
-            color: #fff !important;
-        }
-
-        .fa-star, .rating-star, .banner-rating, span[style*="color"] {
-            color: var(--cor-vermelho) !important;
-        }
-
-        .sidebar, nav.sidebar, div[style*="position: fixed"] {
-            background-color: #000000 !important;
-        }
-        
-        .sidebar-item:hover, .sidebar-item.ativo, nav a.ativo, nav button.ativo {
-            color: var(--cor-vermelho) !important;
-        }
-
-        .conteudo {
-            background-color: var(--fundo-principal) !important;
-            margin-left: 80px;
-            width: calc(100% - 80px);
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                top: auto !important;
-                bottom: 0 !important;
-                left: 0 !important;
-                right: 0 !important;
-                width: 100% !important;
-                height: 64px !important;
-                flex-direction: row !important;
-                align-items: center !important;
-                justify-content: space-around !important;
-                background-color: #121212 !important;
-                border-top: 1px solid #222 !important;
-                z-index: 999 !important;
-            }
-            .conteudo {
-                margin-left: 0 !important;
-                width: 100% !important;
-                padding-bottom: 70px !important;
-            }
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
         }
     </style>
-    <style>
-    :root {
-        --cor-vermelho: #E50914 !important;
-        --cor-vermelho-hover: #b80710 !important;
-        --fundo-principal: #0a0a0a !important;
-    }
-
-    body, .conteudo, .banner, header, nav {
-        background-color: var(--fundo-principal) !important;
-    }
-
-    .btn-assistir-grande, .btn-assistir, a.btn-assistir, button.btn-assistir {
-        background-color: var(--cor-vermelho) !important;
-        color: #ffffff !important;
-        border: none !important;
-    }
-    .btn-assistir-grande:hover, .btn-assistir:hover {
-        background-color: var(--cor-vermelho-hover) !important;
-    }
-
-    .card.selecionado, .card:hover, .poster-item:hover {
-        outline: 2px solid var(--cor-vermelho) !important;
-        box-shadow: 0 0 15px rgba(229, 9, 20, 0.7) !important;
-        border-radius: 6px;
-    }
-
-    .badge, .card .rank, .fa-star, .rating-star, .banner-rating {
-        color: var(--cor-vermelho) !important;
-    }
-    .badge, .card .rank {
-        background-color: var(--cor-vermelho) !important;
-        color: #fff !important;
-    }
-
-    .sidebar-item:hover, .sidebar-item.ativo, nav a.ativo {
-        color: var(--cor-vermelho) !important;
-    }
-</style>
 </head>
 <body>
 
-    <aside class="sidebar" style="position: fixed; top: 0; left: 0; bottom: 0; width: 80px; background: #000; border-right: 1px solid #222; display: flex; flex-direction: column; align-items: flex-start; padding: 20px 0; z-index: 100;">
-        <div class="sidebar-logo" style="display: flex; align-items: center; gap: 10px; padding: 0 18px; margin-bottom: 30px;">
-            <span class="badge" style="width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold;">PK</span>
-            <span class="nome-completo" style="color: #fff; font-weight: bold; font-size: 16px;">PK FILMES</span>
+    <div class="hero">
+        <div class="nav">
+            <div class="logo">NETFLIX</div>
+            <a href="https://www.netflix.com/br/" class="btn-entrar">Entrar</a>
         </div>
-        <nav class="sidebar-nav" style="display: flex; flex-direction: column; gap: 10px; flex: 1; width: 100%;">
-            <a href="index.html" class="sidebar-item ativo" style="display: flex; align-items: center; gap: 16px; padding: 10px 18px; color: #fff; text-decoration: none;"><span class="icone">🏠</span><span class="label">Início</span></a>
-            <a href="catalogo.html" class="sidebar-item" style="display: flex; align-items: center; gap: 16px; padding: 10px 18px; color: #999; text-decoration: none;"><span class="icone">🎬</span><span class="label">Catálogo</span></a>
-            <a href="agenda.html" class="sidebar-item" style="display: flex; align-items: center; gap: 16px; padding: 10px 18px; color: #999; text-decoration: none;"><span class="icone">📅</span><span class="label">Agenda</span></a>
-            <a href="perfil.html" class="sidebar-item" style="display: flex; align-items: center; gap: 16px; padding: 10px 18px; color: #999; text-decoration: none;"><span class="icone">👤</span><span class="label">Perfil</span></a>
-        </nav>
-    </aside>
-
-    <div class="conteudo">
-        <div class="banner" id="banner-destaque" style="position: relative; min-height: 60vh; display: flex; align-items: flex-end; padding: 40px; background-color: #000; background-size: cover; background-position: center;">
-            <div class="banner-conteudo" style="max-width: 600px;">
-                <h1 id="banner-titulo" style="font-size: 34px; margin-bottom: 12px; color: #fff;">Fúria</h1>
-                <p id="banner-sinopse" style="color: #ddd; font-size: 14px; margin-bottom: 12px;">Durante o final da Segunda Guerra Mundial, um grupo de soldados enfrenta inimigos na Alemanha...</p>
-                <div class="banner-rating" style="margin-bottom: 18px; font-weight: bold;">★★★★★ 7.5</div>
-                <div class="banner-botoes" style="display: flex; gap: 12px;">
-                    <a href="detalhes.html?id=furia" class="btn-assistir-grande" style="padding: 12px 26px; text-decoration: none; display: inline-block;">▶ Assistir Agora</a>
-                    <a href="#" class="btn-trailer" style="background: rgba(255,255,255,0.15); color: #fff; padding: 12px 26px; border-radius: 6px; text-decoration: none; font-weight: bold;">🎥 Trailer</a>
-                </div>
+        <div class="hero-content">
+            <h1>Mais tempo assistindo. Menos tempo buscando.</h1>
+            <p>A partir de R$ 20,90. Cancele quando quiser.</p>
+            <p>Quer assistir? Informe seu email para criar ou reiniciar sua assinatura.</p>
+            <div class="signup-form">
+                <input type="email" placeholder="E-mail">
+                <button>Vamos lá &gt;</button>
             </div>
-        </div>
-
-        <div class="secao" style="padding: 20px 30px;">
-            <h2 style="font-size: 18px; margin-bottom: 10px; color: #fff;">Filmes Populares</h2>
-            <div class="carrossel" id="filmes-container" style="display: flex; gap: 15px; overflow-x: auto;"></div>
         </div>
     </div>
 
-<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
-<script src="script.js"></script>
+    <section>
+        <h2>Em alta</h2>
+        <div class="trending-list">
+            <div class="trending-item">1. Meu Nome é Farah</div>
+            <div class="trending-item">2. WWE Money in the Bank</div>
+            <div class="trending-item">3. O Mentalista</div>
+            <div class="trending-item">4. 100 Dias de Mentiras</div>
+            <div class="trending-item">5. O Protetor: Capítulo Final</div>
+        </div>
+    </section>
+
+    <!-- Seção de Perguntas Frequentes Interativa -->
+    <section>
+        <h2>Perguntas frequentes</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">O que é a Netflix? <span>+</span></div>
+                <div class="faq-answer">A Netflix é um serviço de streaming que oferece uma ampla variedade de séries, filmes e documentários em milhares de aparelhos conectados à internet. Você pode assistir a quanto quiser, quando quiser, sem comerciais – tudo por um preço mensal acessível.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Quanto custa a Netflix? <span>+</span></div>
+                <div class="faq-answer">Assista à Netflix no seu celular, tablet, Smart TV, notebook ou aparelho de streaming por uma taxa mensal única. Os planos vão de R$ 20,90 a R$ 55,90 por mês. Sem contrato nem taxas extras.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Onde posso assistir? <span>+</span></div>
+                <div class="faq-answer">Assista onde quiser, quando quiser. Faça login com sua conta Netflix em netflix.com para começar a assistir no computador ou em qualquer aparelho conectado à internet que ofereça o aplicativo Netflix.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Como faço para cancelar? <span>+</span></div>
+                <div class="faq-answer">A Netflix é flexível. Não há contratos nem compromissos. Você pode cancelar a sua conta na internet com apenas dois cliques. Não há taxa de cancelamento – você pode começar ou parar a sua assinatura a qualquer momento.</div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>Dúvidas? Ligue para 0800 591 8943</p>
+        <div class="footer-links">
+            <a href="https://www.netflix.com/br/">Perguntas frequentes</a>
+            <a href="https://www.netflix.com/br/">Central de Ajuda</a>
+            <a href="https://www.netflix.com/br/">Conta</a>
+            <a href="https://www.netflix.com/br/">Termos de Uso</a>
+        </div>
+    </footer>
+
+    <!-- Script de Interatividade -->
+    <script>
+        const faqItems = document.querySelectorAll('.faq-item');
+
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                // Fecha os outros itens abertos (opcional)
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                // Alterna o estado do item clicado
+                item.classList.toggle('active');
+            });
+        });
+    </script>
 </body>
 </html>
