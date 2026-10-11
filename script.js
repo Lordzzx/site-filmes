@@ -43,10 +43,16 @@ function criarCard(filme, rank) {
   return card;
 }
 
+function gerarEstrelas(nota) {
+  const cheias = Math.round(nota / 2);
+  const vazias = 5 - cheias;
+  return "★".repeat(cheias) + "☆".repeat(vazias);
+}
+
 function selecionarDestaque(filme) {
   document.getElementById("banner-titulo").innerText = filme.Titulo;
   document.getElementById("banner-sinopse").innerText = filme.Sinopse || "";
-  document.getElementById("banner-rating").innerText = filme.Nota ? `⭐ ${filme.Nota}` : "";
+  document.getElementById("banner-rating").innerText = filme.Nota ? `${gerarEstrelas(filme.Nota)}  ${filme.Nota}` : "";
   document.getElementById("banner-assistir").href = `detalhes.html?id=${filme.id}`;
   document.getElementById("banner-trailer").href = `detalhes.html?id=${filme.id}`;
 
@@ -213,4 +219,4 @@ document.getElementById("btn-salvar-foto").addEventListener("click", () => {
     msg.innerText = "Erro ao salvar a foto. Tente novamente.";
     msg.style.color = "#E50914";
   });
-});
+}); c:\Users\Usuario\AppData\Local\Packages\MicrosoftWindows.Client.Core_cw5n1h2txyewy\TempState\ScreenClip\{4C9F0BBF-3479-4FC1-9194-90CD527ACC9F}.png
