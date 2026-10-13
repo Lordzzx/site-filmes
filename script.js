@@ -149,6 +149,8 @@ function carregarDadosPerfil(user) {
 
 auth.onAuthStateChanged((user) => {
   if (!user) { window.location.href = "perfis.html"; return; }
+  const perfilAtivo = localStorage.getItem("perfilAtivo");
+if (!perfilAtivo) { window.location.href = "selecionar-perfil.html"; return; }
 
   carregarDadosPerfil(user);
 

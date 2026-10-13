@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LORD-CINE - Quem está assistindo?</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        body { background: #141414; color: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .container { text-align: center; padding: 20px; }
+        h1 { font-size: 2.2rem; margin-bottom: 40px; font-weight: 400; }
+        .perfis-lista { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; margin-bottom: 40px; }
+        .perfil-card { cursor: pointer; width: 130px; }
+        .perfil-avatar {
+            width: 130px; height: 130px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 48px; font-weight: bold; color: #fff;
+            border: 3px solid transparent;
+        }
+        .perfil-card:hover .perfil-avatar { border-color: #fff; }
+        .perfil-nome { margin-top: 10px; color: #aaa; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .perfil-card:hover .perfil-nome { color: #fff; }
+        .perfil-add .perfil-avatar { background: #2f2f2f; border: 2px dashed #555; font-size: 40px; color: #888; }
+
+        .btn-gerenciar {
+            background: transparent; border: 1px solid #777; color: #aaa;
+            padding: 10px 24px; font-size: 14px; letter-spacing: 1px; cursor: pointer; border-radius: 4px;
+        }
+        .btn-gerenciar:hover { color: #fff; border-color: #fff; }
+
+        .modal-novo-perfil { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); align-items:center; justify-content:center; z-index:50; }
+        .modal-novo-perfil.mostrar { display:flex; }
+        .modal-novo-conteudo { background:#181818; padding:30px; border-radius:8px; width:90%; max-width:360px; }
+        .modal-novo-conteudo h2 { margin-bottom:16px; font-size:18px; }
+        .modal-novo-conteudo input { width:100%; padding:10px; border-radius:4px; border:1px solid #444; background:#2f2f2f; color:#fff; margin-bottom:16px; font-size: 14px; }
+        .modal-novo-botoes { display:flex; gap:10px; }
+        .modal-novo-botoes button { flex:1; padding:10px; border-radius:4px; border:none; cursor:pointer; font-weight:bold; }
+        .btn-criar { background:#E50914; color:#fff; }
+        .btn-cancelar { background:#333; color:#fff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Quem está assistindo?</h1>
+        <div class="perfis-lista" id="perfis-lista"></div>
+        <button class="btn-gerenciar" id="btn-novo-perfil">+ ADICIONAR PERFIL</button>
+    </div>
+
+    <div class="modal-novo-perfil" id="modal-novo-perfil">
+        <div class="modal-novo-conteudo">
+            <h2>Novo perfil</h2>
+            <input type="text" id="input-nome-perfil" placeholder="Nome do perfil" maxlength="20">
+            <div class="modal-novo-botoes">
+                <button class="btn-cancelar" id="btn-cancelar-perfil">Cancelar</button>
+                <button class="btn-criar" id="btn-criar-perfil">Criar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCxkJCD8HENp0jk2ZwU0mLDhTi9zWd5WeM",
+            authDomain: "netdev-9a4e6.firebaseapp.com",
+            databaseURL: "https://netdev-9a4e6-default-rtdb.firebaseio.com",
+            projectId: "netdev-9a4e6",
+            storageBucket: "netdev-9a4e6.firebasestorage.app",
+            messagingSenderId: "612992618514",
+            appId: "1:612992618514:web:36011d43647ea6d42fc8cb",
+            measurementId: "G-M9H44B2LV1"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const auth = firebase.auth();
+
+        const CORES = ["#E50914", "#0071EB", "#00A862", "#F5A623", "#8E44AD", "#16A2A2"];
+        function corPeloNome(nome) {
+            let soma = 0;
+            for (let i = 0; i < nome.length; i++) soma += nome.charCodeAt(i);
+            return CORES[soma % CORES.length];
+        }
+
+        let uidAtual = null;
+
+        function renderizarPerfis(perfis) {
+            const lista = document.getElementById("perfis-lista");
+            lista.innerHTML = "";
+            Object.keys(perfis || {}).forEach((id) => {
+                const nome = perfis[id].Nome || "Perfil";
+                const card = document.createElement("div");
+                card.className = "perfil-card";
+                card.innerHTML = `
+                    <div class="perfil-avatar" style="background:${corPeloNome(nome)}">${nome.charAt(0).toUpperCase()}</div>
+                    <div class="perfil-nome">${nome}</div>
+                `;
+                card.addEventListener("click", () => {
+                    localStorage.setItem("perfilAtivo", JSON.stringify({ id: id, nome: nome }));
+                    window.location.href = "index.html";
+                });
+                lista.appendChild(card);
+            });
+        }
+
+        auth.onAuthStateChanged((user) => {
+            if (!user) { window.location.href = "perfis.html"; return; }
+            uidAtual = user.uid;
+            db.ref("Perfis/" + user.uid + "/ListaPerfis").on("value", (snap) => {
+                renderizarPerfis(snap.val());
+            });
+        });
+
+        document.getElementById("btn-novo-perfil").addEventListener("click", () => {
+            document.getElementById("modal-novo-perfil").classList.add("mostrar");
+        });
+        document.getElementById("btn-cancelar-perfil").addEventListener("click", () => {
+            document.getElementById("modal-novo-perfil").classList.remove("mostrar");
+            document.getElementById("input-nome-perfil").value = "";
+        });
+        document.getElementById("btn-criar-perfil").addEventListener("click", () => {
+            const nome = document.getElementById("input-nome-perfil").value.trim();
+            if (!nome) { alert("Digite um nome para o perfil."); return; }
+            if (!uidAtual) return;
+            db.ref("Perfis/" + uidAtual + "/ListaPerfis").push({ Nome: nome });
+            document.getElementById("modal-novo-perfil").classList.remove("mostrar");
+            document.getElementById("input-nome-perfil").value = "";
+        });
+    </script>
+</body>
+</html>

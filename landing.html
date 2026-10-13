@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LORD-CINE - Filmes e séries</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        body { background-color: #000; color: #fff; }
+
+        .hero {
+            background: radial-gradient(circle at 70% 20%, rgba(229,9,20,0.25) 0%, transparent 45%),
+                        linear-gradient(180deg, #1a1a1a 0%, #000 100%);
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px 50px;
+        }
+        .nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo { color: #E50914; font-size: 2rem; font-weight: bold; letter-spacing: 1px; }
+        .btn-entrar-topo {
+            background-color: #E50914; color: #fff; border: none;
+            padding: 8px 20px; font-size: 1rem; font-weight: bold;
+            border-radius: 4px; cursor: pointer; text-decoration: none;
+        }
+        .btn-entrar-topo:hover { background-color: #f40612; }
+
+        .hero-content { text-align: center; max-width: 650px; margin: 0 auto; }
+        .selo-gratis {
+            display: inline-block; background: rgba(229,9,20,0.15); border: 1px solid #E50914;
+            color: #ff6b6f; font-size: 0.8rem; font-weight: bold; padding: 6px 16px;
+            border-radius: 20px; margin-bottom: 18px; letter-spacing: 0.5px;
+        }
+        .hero-content h1 { font-size: 2.6rem; font-weight: 900; margin-bottom: 15px; }
+        .hero-content p { font-size: 1.1rem; margin-bottom: 25px; color: #ddd; }
+
+        .signup-form { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+        .signup-form input {
+            padding: 15px; width: 320px; max-width: 70vw; border-radius: 4px;
+            border: 1px solid #8c8c8c; background: rgba(0,0,0,0.4); color: #fff; font-size: 1rem;
+        }
+        .signup-form button {
+            background-color: #E50914; color: #fff; border: none; padding: 0 25px;
+            font-size: 1.1rem; font-weight: bold; border-radius: 4px; cursor: pointer;
+        }
+        .signup-form button:hover { background-color: #f40612; }
+
+        section { padding: 50px 10%; border-top: 8px solid #141414; }
+        h2 { font-size: 1.6rem; margin-bottom: 20px; }
+
+        .faq-container { max-width: 900px; margin: 0 auto; }
+        .faq-item { background-color: #2f2f2f; margin-bottom: 8px; border-radius: 6px; cursor: pointer; overflow: hidden; }
+        .faq-question { padding: 18px 20px; font-size: 15px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+        .faq-question:hover { background-color: #3a3a3a; }
+        .faq-answer { max-height: 0; overflow: hidden; padding: 0 20px; font-size: 13px; line-height: 1.6; color: #ccc; transition: max-height 0.3s ease, padding 0.3s ease; }
+        .faq-item.active .faq-answer { max-height: 300px; padding: 0 20px 18px; }
+        .faq-question span { font-size: 20px; transition: transform 0.3s ease; color: #E50914; }
+        .faq-item.active .faq-question span { transform: rotate(45deg); }
+
+        footer { padding: 40px 10%; color: #737373; font-size: 0.85rem; text-align: center; }
+
+        @media (max-width: 600px) {
+            .hero { padding: 20px 20px; }
+            .hero-content h1 { font-size: 1.8rem; }
+            .signup-form input { width: 100%; }
+            section { padding: 35px 6%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero">
+        <div class="nav">
+            <div class="logo">LORD-CINE</div>
+            <a href="perfis.html" class="btn-entrar-topo">Entrar</a>
+        </div>
+        <div class="hero-content">
+            <span class="selo-gratis">100% GRÁTIS</span>
+            <h1>Filmes e séries, sem complicação.</h1>
+            <p>Entre com sua conta Google e comece a assistir agora, sem nenhum custo.</p>
+            <form class="signup-form" id="form-entrar">
+                <input type="email" id="emailInput" placeholder="E-mail">
+                <button type="submit">Vamos lá &gt;</button>
+            </form>
+        </div>
+    </div>
+
+    <section>
+        <h2>Perguntas Frequentes</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">O que é o LORD-CINE? <span>+</span></div>
+                <div class="faq-answer">O LORD-CINE é uma plataforma onde você encontra filmes e séries organizados por categoria, com Top 10, Continuar Assistindo e páginas de detalhes de cada título.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Preciso pagar para usar? <span>+</span></div>
+                <div class="faq-answer">Não. O LORD-CINE é totalmente gratuito, sem mensalidade, sem cartão de crédito e sem período de teste — você só precisa de uma conta Google.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Posso ter mais de um perfil na mesma conta? <span>+</span></div>
+                <div class="faq-answer">Sim. Depois de entrar com sua conta Google, você escolhe (ou cria) um perfil antes de começar a assistir.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Onde falo com o suporte? <span>+</span></div>
+                <div class="faq-answer">Depois de entrar, clique em "Meu Perfil" no menu lateral — lá tem os links do grupo de Suporte e Comunidade.</div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>LORD-CINE</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.faq-item').forEach((item) => {
+            const pergunta = item.querySelector('.faq-question');
+            pergunta.addEventListener('click', () => {
+                document.querySelectorAll('.faq-item').forEach((outro) => {
+                    if (outro !== item) outro.classList.remove('active');
+                });
+                item.classList.toggle('active');
+            });
+        });
+
+        document.getElementById('form-entrar').addEventListener('submit', (e) => {
+            e.preventDefault();
+            window.location.href = 'perfis.html';
+        });
+    </script>
+</body>
+</html>
