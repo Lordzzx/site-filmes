@@ -1,308 +1,463 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LORD-CINE - Assistir a séries online, assistir a filmes online</title>
+    <title>LORD-CINE</title>
     <style>
-        * {
-            box-sizing: border-box;
+        * { box-sizing: border-box; }
+        body {
+            background-color: #141414;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+            display: flex;
         }
-        body {
-            background-color: #000;
-            color: #fff;
-        }
-        .hero {
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://assets.nflxext.com/ffe/siteui/vlv3/99784e91-add6-41c8-8af9-ab23e1927a4b/5d10d182-4467-4eb0-9285-8f6412140881/BR-pt-20240311-popsignuptwoweeks-perspective_alpha_website_large.jpg');
-            background-size: cover;
-            background-position: center;
-            height: 70vh;
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 80px;
+            background: #000;
+            border-right: 1px solid #222;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            padding: 20px 50px;
-            border-bottom: 8px solid #222;
+            align-items: flex-start;
+            padding: 20px 0;
+            z-index: 100;
+            overflow: hidden;
+            transition: width 0.25s ease;
         }
-        .nav {
+        .sidebar:hover {
+            width: 220px;
+        }
+        .sidebar-logo {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-        }
-        .logo {
-            color: #E50914;
-            font-size: 2rem;
-            font-weight: bold;
-            letter-spacing: 2px;
-        }
-        .nav-actions {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-        .language-select {
-            background: rgba(0, 0, 0, 0.4);
-            color: #fff;
-            border: 1px solid #aaa;
-            padding: 7px 15px;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            cursor: pointer;
-        }
-        .btn-entrar {
-            background-color: #E50914;
-            color: #fff;
-            padding: 7px 17px;
-            border: none;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-        }
-        .btn-entrar:hover, .signup-form button:hover {
-            background-color: #f40612;
-        }
-        .hero-content {
-            text-align: center;
-            max-width: 650px;
-            margin: 0 auto;
-        }
-        .hero-content h1 {
-            font-size: 3rem;
-            font-weight: 900;
-            margin-bottom: 15px;
-        }
-        .hero-content p {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-        }
-        .signup-form {
-            display: flex;
-            justify-content: center;
             gap: 10px;
+            padding: 0 18px;
+            margin-bottom: 30px;
+            white-space: nowrap;
         }
-        .signup-form input {
-            padding: 15px;
-            width: 380px;
-            border-radius: 4px;
-            border: 1px solid #8c8c8c;
-            background: rgba(0,0,0,0.4);
+        .sidebar-logo .badge {
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+            background: #E50914;
             color: #fff;
-            font-size: 1rem;
-        }
-        .signup-form button {
-            background-color: #E50914;
-            color: #fff;
-            border: none;
-            padding: 0 25px;
-            font-size: 1.5rem;
-            font-weight: bold;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        section {
-            padding: 50px 10%;
-            border-bottom: 8px solid #222;
-        }
-        h2 {
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-        }
-        .trending-list {
-            display: flex;
-            gap: 20px;
-            overflow-x: auto;
-            padding-bottom: 15px;
-        }
-        .trending-item {
-            min-width: 150px;
-            height: 220px;
-            background-color: #333;
             border-radius: 8px;
             display: flex;
-            align-items: flex-end;
-            padding: 10px;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-
-        /* FAQ */
-        .faq-container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        .faq-item {
-            background-color: #303030;
-            margin-bottom: 8px;
-            cursor: pointer;
-        }
-        .faq-question {
-            padding: 20px;
-            font-size: 1.2rem;
-            display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 15px;
         }
-        .faq-question:hover {
-            background-color: #414141;
+        .sidebar-logo .nome-completo {
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            opacity: 0;
+            transition: opacity 0.2s ease;
         }
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            background-color: #303030;
-            padding: 0 20px;
-            font-size: 1.1rem;
-            line-height: 1.5;
-            transition: max-height 0.3s ease, padding 0.3s ease;
-            border-top: 1px solid transparent;
+        .sidebar:hover .sidebar-logo .nome-completo {
+            opacity: 1;
         }
-        .faq-item.active .faq-answer {
-            max-height: 200px;
-            padding: 20px;
-            border-top: 1px solid #000;
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 1;
+            width: 100%;
         }
-        .faq-item.active .faq-question span {
-            transform: rotate(45deg);
-            transition: transform 0.3s ease;
+        .sidebar-item {
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            width: 100%;
+            padding: 10px 18px;
+            white-space: nowrap;
         }
-        .faq-question span {
-            font-size: 2rem;
-            transition: transform 0.3s ease;
+        .sidebar-item .icone { font-size: 22px; flex-shrink: 0; }
+        .sidebar-item .label {
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .sidebar:hover .sidebar-item .label {
+            opacity: 1;
+        }
+        .sidebar-item:hover, .sidebar-item.ativo {
+            background: #2f2f2f;
+            color: #fff;
+        }
+        .sidebar-perfil {
+            position: relative;
+        }
+        .sidebar-perfil > img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+        }
+        .user-dropdown {
+            display: none;
+            position: absolute;
+            bottom: 0;
+            left: 60px;
+            background: #2f2f2f;
+            border-radius: 6px;
+            padding: 14px;
+            min-width: 220px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            z-index: 10;
+            text-align: left;
+        }
+        .user-dropdown.mostrar { display: block; }
+        .dropdown-perfil {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #444;
+            margin-bottom: 10px;
+        }
+        .dropdown-perfil img { width: 40px; height: 40px; border-radius: 50%; }
+        .dropdown-perfil p { margin: 0; font-size: 14px; color: #fff; font-weight: bold; }
+        .dropdown-secao { margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #444; }
+        .dropdown-titulo { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 8px 0; }
+        .dropdown-link { display: block; color: #ccc; text-decoration: none; font-size: 13px; padding: 6px 0; }
+        .dropdown-link:hover { color: #E50914; }
+        .user-dropdown button {
+            width: 100%;
+            background: transparent;
+            border: 1px solid #555;
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .user-dropdown button:hover { background: #444; }
+
+        .conteudo {
+            margin-left: 80px;
+            width: calc(100% - 80px);
+        }
+        .busca-overlay {
+            display: none;
+            padding: 15px 30px 0 30px;
+        }
+        .busca-overlay input {
+            background: #2f2f2f;
+            border: 1px solid #555;
+            color: #fff;
+            padding: 10px 14px;
+            border-radius: 4px;
+            font-size: 14px;
+            width: 100%;
+            max-width: 400px;
+        }
+        .categorias-wrapper { position: relative; }
+        .categorias {
+            display: none;
+            flex-wrap: wrap;
+            gap: 10px;
+            position: fixed;
+            top: 110px;
+            left: 90px;
+            background: #181818;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 15px;
+            max-width: 520px;
+            z-index: 20;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+        }
+        .categorias.mostrar { display: flex; }
+        .cat-btn {
+            background: #2f2f2f; color: #ccc; border: none; padding: 6px 16px;
+            border-radius: 20px; font-size: 13px; cursor: pointer; white-space: nowrap;
+        }
+        .cat-btn:hover { background: #444; color: #fff; }
+        .cat-btn.ativo { background: #E50914; color: #fff; }
+
+        .banner {
+            position: relative;
+            min-height: 60vh;
+            display: flex;
+            align-items: flex-end;
+            padding: 40px 40px 110px 40px;
+            background-color: #000;
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            transition: background-image 0.3s ease;
+        }
+        .banner::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 260px;
+            background: linear-gradient(to bottom, rgba(20,20,20,0) 0%, #141414 100%);
+            pointer-events: none;
+        }
+        .conteudo > .secao:first-of-type {
+            margin-top: -210px;
+            position: relative;
+            z-index: 2;
         }
 
-        footer {
-            padding: 50px 10%;
-            color: #737373;
-            font-size: 0.9rem;
+        .banner-conteudo { max-width: 600px; }
+        .banner-conteudo h1 { font-size: 34px; margin: 0 0 12px 0; text-shadow: 2px 2px 6px #000; }
+        .banner-conteudo p { color: #ddd; font-size: 14px; line-height: 1.5; margin-bottom: 12px; }
+        .banner-logo-img { max-width: 100%; max-height: 140px; display: block; }
+        .banner-rating { color: #f5c518; font-weight: bold; font-size: 14px; margin-bottom: 18px; }
+        .banner-botoes { display: flex; gap: 12px; }
+        .btn-assistir-grande {
+            background: #E50914; color: #fff; text-decoration: none; font-weight: bold;
+            padding: 12px 26px; border-radius: 6px; font-size: 15px;
         }
-        footer a {
-            color: #737373;
-            text-decoration: underline;
+        .btn-assistir-grande:hover { background: #ff1b26; }
+        .btn-trailer {
+            background: rgba(255,255,255,0.15); color: #fff; text-decoration: none; font-weight: bold;
+            padding: 12px 26px; border-radius: 6px; font-size: 15px;
         }
-        .footer-links {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-top: 20px;
-        }
+        .btn-trailer:hover { background: rgba(255,255,255,0.3); }
+
+        .secao { padding: 20px 30px; }
+        .secao h2 { font-size: 18px; margin-bottom: 10px; }
+        .carrossel { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px; }
+        .card { min-width: 140px; background-color: #2f2f2f; border-radius: 6px; overflow: hidden; text-align: center; padding-bottom: 10px; position: relative; }
+        .card img { width: 100%; height: 180px; object-fit: cover; }
+        .card-titulo { font-size: 13px; color: #ddd; margin: 8px 6px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card.selecionado { outline: 2px solid #E50914; box-shadow: 0 0 15px rgba(229,9,20,0.6); border-radius: 6px; }
+.carrossel-wrapper { position: relative; }
+.seta-carrossel { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 20px; z-index: 5; display: flex; align-items: center; justify-content: center; }
+.seta-carrossel:hover { background: rgba(229,9,20,0.8); }
+.seta-esquerda { left: 5px; }
+.seta-direita { right: 5px; }
+        .card .rank { position: absolute; top: 0; left: 0; background: #E50914; color: #fff; font-size: 13px; font-weight: bold; padding: 3px 10px; border-bottom-right-radius: 6px; }
+        .btn-assistir { display: inline-block; background-color: #E50914; color: #fff; text-decoration: none; padding: 6px 12px; border-radius: 4px; margin-top: 8px; font-size: 13px; font-weight: bold; }
+        .perfil-modal { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.85); z-index:200; align-items:center; justify-content:center; }
+.perfil-modal.mostrar { display:flex; }
+.perfil-modal-conteudo { background:#181818; border-radius:10px; padding:32px; width:90%; max-width:480px; max-height:85vh; overflow-y:auto; position:relative; color:#fff; }
+.perfil-modal-fechar { position:absolute; top:16px; right:16px; background:none; border:none; color:#fff; font-size:20px; cursor:pointer; }
+.perfil-modal-header { display:flex; align-items:center; gap:16px; margin-bottom:24px; }
+.perfil-modal-header img { width:70px; height:70px; border-radius:50%; object-fit:cover; }
+.perfil-modal-header h2 { margin:0; font-size:20px; }
+.perfil-modal-header p { margin:4px 0 0; color:#aaa; font-size:14px; }
+.perfil-modal-secao { border-top:1px solid #333; padding-top:20px; margin-top:20px; }
+.perfil-modal-secao h3 { margin:0 0 8px; font-size:16px; }
+.perfil-modal-dica { color:#aaa; font-size:13px; margin-bottom:12px; }
+.perfil-modal-foto-form { display:flex; gap:8px; }
+.perfil-modal-foto-form input { flex:1; padding:10px; border-radius:4px; border:1px solid #444; background:#2f2f2f; color:#fff; }
+.perfil-modal-foto-form button { padding:10px 16px; border:none; border-radius:4px; background:#E50914; color:#fff; cursor:pointer; font-weight:bold; }
+.perfil-modal-foto-form button:hover { background:#f6121d; }
+#msg-foto-status { margin-top:8px; font-size:13px; min-height:16px; }
+.perfil-modal-sair { width:100%; margin-top:24px; padding:12px; border:1px solid #444; background:transparent; color:#fff; border-radius:4px; cursor:pointer; }
+.perfil-modal-sair:hover { background:#333; }
+@media (max-width: 768px) {
+    .sidebar {
+        top: auto;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 64px;
+        flex-direction: row;
+        align-items: center;
+        padding: 0;
+        overflow: visible;
+        z-index: 200;
+    }
+    .sidebar:hover { width: 100%; }
+    .sidebar-logo {
+        position: fixed;
+        top: 10px;
+        left: 14px;
+        margin-bottom: 0;
+        padding: 0;
+        z-index: 201;
+    }
+    .sidebar-logo .nome-completo { display: none; }
+    .sidebar-nav {
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+        gap: 0;
+    }
+    .sidebar-item {
+        flex-direction: column;
+        align-items: center;
+        padding: 6px 4px;
+        gap: 2px;
+        width: auto;
+    }
+    .sidebar-item .icone { font-size: 20px; }
+    .sidebar-item .label {
+        opacity: 1;
+        font-size: 10px;
+    }
+    .sidebar-perfil {
+        position: fixed;
+        top: 8px;
+        right: 14px;
+        z-index: 201;
+    }
+    .sidebar-perfil img {
+        width: 32px;
+        height: 32px;
+    }
+    .conteudo {
+        margin-left: 0;
+        width: 100%;
+        padding-bottom: 70px;
+    }
+        .categorias {
+        left: 10px;
+        right: 10px;
+        max-width: none;
+    }
+    .banner {
+        padding: 20px 20px 90px 20px;
+        min-height: 50vh;
+    }
+    .banner-logo-img {
+        max-height: 70px;
+    }
+    .banner-titulo {
+        font-size: 24px;
+        margin-bottom: 8px;
+    }
+    .banner-conteudo p {
+        font-size: 12px;
+        line-height: 1.4;
+        margin-bottom: 8px;
+    }
+    .banner-rating {
+        font-size: 12px;
+        margin-bottom: 12px;
+    }
+    .banner-botoes {
+        gap: 8px;
+    }
+    .btn-assistir-grande, .btn-trailer {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+}
+.faq-container { max-width: 900px; }
+.faq-item { background-color: #2f2f2f; margin-bottom: 8px; border-radius: 6px; cursor: pointer; overflow: hidden; }
+.faq-question { padding: 18px 20px; font-size: 15px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+.faq-question:hover { background-color: #3a3a3a; }
+.faq-answer { max-height: 0; overflow: hidden; padding: 0 20px; font-size: 13px; line-height: 1.6; color: #ccc; transition: max-height 0.3s ease, padding 0.3s ease; }
+.faq-item.active .faq-answer { max-height: 300px; padding: 0 20px 18px; }
+.faq-question span { font-size: 20px; transition: transform 0.3s ease; color: #E50914; }
+.faq-item.active .faq-question span { transform: rotate(45deg); }
     </style>
 </head>
 <body>
 
-    <div class="hero">
-        <div class="nav">
-            <div class="logo">LORD-CINE</div>
-            <div class="nav-actions">
-                <select class="language-select" id="langSelect">
-                    <option value="pt">Português</option>
-                    <option value="en">English</option>
-                </select>
-                <button class="btn-entrar" id="btnLogin">Entrar</button>
-            </div>
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <span class="badge">LC</span>
+            <span class="nome-completo">LORD-CINE</span>
         </div>
-        <div class="hero-content">
-            <h1>Mais tempo assistindo. Menos tempo buscando.</h1>
-            <p>A partir de R$ 20,90. Cancele quando quiser.</p>
-            <p>Quer assistir? Informe seu email para criar ou reiniciar sua assinatura no LORD-CINE.</p>
-            
-            <div class="signup-form">
-                <input type="email" id="emailInput" placeholder="E-mail">
-                <button id="btnSubmit">Vamos lá &gt;</button>
+        <nav class="sidebar-nav">
+            <a href="index.html" class="sidebar-item ativo"><span class="icone">🏠</span><span class="label">Início</span></a>
+            <button class="sidebar-item" id="btn-busca-sidebar"><span class="icone">🔍</span><span class="label">Pesquisar</span></button>
+            <button class="sidebar-item" id="btn-categorias"><span class="icone">🎬</span><span class="label">Catálogo</span></button>
+            <a href="agenda.html" class="sidebar-item"><span class="icone">📅</span><span class="label">Agenda</span></a>
+            <button class="sidebar-item" id="btn-perfil-sidebar"><span class="icone">👤</span><span class="label">Meu Perfil</span></button>
+        </nav>
+        <div class="sidebar-perfil" id="user-info">
+            <img id="user-foto" src="" alt="Perfil">
+        </div>
+    </aside>
+
+    <div class="perfil-modal" id="perfil-modal">
+        <div class="perfil-modal-conteudo">
+            <button class="perfil-modal-fechar" id="btn-fechar-perfil">✕</button>
+            <div class="perfil-modal-header">
+                <img id="perfil-modal-foto" src="" alt="Foto de perfil">
+                <div>
+                    <h2 id="perfil-modal-nome"></h2>
+                    <p id="perfil-modal-email"></p>
+                </div>
             </div>
+
+            <div class="perfil-modal-secao">
+                <h3>Alterar foto de perfil</h3>
+                <p class="perfil-modal-dica">Cole o link de uma imagem (do Google Fotos, Imgur, etc.)</p>
+                <div class="perfil-modal-foto-form">
+                    <input type="text" id="input-foto-url" placeholder="https://...">
+                    <button id="btn-salvar-foto">Salvar</button>
+                </div>
+                <p id="msg-foto-status"></p>
+            </div>
+
+            <div class="perfil-modal-secao">
+                <p class="dropdown-titulo">Suporte e Comunidade</p>
+                <a href="https://chat.whatsapp.com/Ilj8Aq7M2443DPlSLWlmmF?s=cl&p=a&mlu=4&ilr=4" target="_blank" class="dropdown-link">💬 Grupo de Bate-papo</a>
+                <a href="https://chat.whatsapp.com/BbLCtumfzqTIF2lf3twymy?s=cl&p=a&mlu=4&ilr=4" target="_blank" class="dropdown-link">📝 Alternativos para Pedidos</a>
+            </div>
+
+            <button id="btn-logout" class="perfil-modal-sair">Sair da conta</button>
         </div>
     </div>
 
-    <section>
-        <h2>Em alta</h2>
-        <div class="trending-list">
-            <div class="trending-item">1. Meu Nome é Farah</div>
-            <div class="trending-item">2. WWE Money in the Bank</div>
-            <div class="trending-item">3. O Mentalista</div>
-            <div class="trending-item">4. 100 Dias de Mentiras</div>
-            <div class="trending-item">5. O Protetor: Capítulo Final</div>
+    <div class="conteudo">
+        <div class="busca-overlay" id="busca-overlay">
+            <input type="text" id="busca-input" placeholder="Pesquisar filmes...">
         </div>
-    </section>
 
-    <section>
-        <h2>Perguntas frequentes</h2>
-        <div class="faq-container">
-            <div class="faq-item">
-                <div class="faq-question">O que é o LORD-CINE? <span>+</span></div>
-                <div class="faq-answer">O LORD-CINE é um serviço de streaming que oferece uma ampla variedade de séries, filmes e documentários em milhares de aparelhos conectados à internet. Você pode assistir a quanto quiser, quando quiser, sem comerciais – tudo por um preço mensal acessível.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">Quanto custa o LORD-CINE? <span>+</span></div>
-                <div class="faq-answer">Assista ao LORD-CINE no seu celular, tablet, Smart TV, notebook ou aparelho de streaming por uma taxa mensal única. Os planos vão de R$ 20,90 a R$ 55,90 por mês. Sem contrato nem taxas extras.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">Onde posso assistir ao LORD-CINE? <span>+</span></div>
-                <div class="faq-answer">Assista onde quiser, quando quiser. Faça login com sua conta LORD-CINE para começar a assistir no computador ou em qualquer aparelho conectado à internet que ofereça o aplicativo.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">Como faço para cancelar o LORD-CINE? <span>+</span></div>
-                <div class="faq-answer">O LORD-CINE é flexível. Não há contratos nem compromissos. Você pode cancelar a sua conta na internet com apenas dois cliques. Não há taxa de cancelamento.</div>
+        <div class="categorias-wrapper">
+            <nav class="categorias" id="categorias-nav"></nav>
+        </div>
+
+        <div class="banner" id="banner-destaque">
+            <div class="banner-conteudo">
+                <h1 id="banner-titulo">Carregando...</h1>
+                <p id="banner-sinopse"></p>
+                <div class="banner-rating" id="banner-rating"></div>
+                <div class="banner-botoes">
+                    <a href="#" id="banner-assistir" class="btn-assistir-grande">▶ Assistir Agora</a>
+                    <a href="#" id="banner-trailer" class="btn-trailer">🎥 Detalhes</a>
+                </div>
             </div>
         </div>
-    </section>
 
-    <footer>
-        <p>Dúvidas? Ligue para 0800 591 8943</p>
-        <div class="footer-links">
-            <a href="#">Perguntas frequentes</a>
-            <a href="#">Central de Ajuda</a>
-            <a href="#">Conta</a>
-            <a href="#">Termos de Uso</a>
+        <div class="secao" id="secao-continuar" style="display:none;">
+            <h2>Continuar assistindo</h2>
+            <div class="carrossel" id="continuar-container"></div>
         </div>
-    </footer>
 
-    <!-- Script com todos os botões funcionando -->
-    <script>
-        // 1. Interatividade do FAQ (Abrir e Fechar perguntas)
-        const faqItems = document.querySelectorAll('.faq-item');
-        faqItems.forEach(item => {
-            const question = item.querySelector('.faq-question');
-            question.addEventListener('click', () => {
-                faqItems.forEach(otherItem => {
-                    if (otherItem !== item) {
-                        otherItem.classList.remove('active');
-                    }
-                });
-                item.classList.toggle('active');
-            });
-        });
+        <div class="secao">
+            <h2>Top 10</h2>
+            <div class="carrossel" id="top100-container"></div>
+        </div>
 
-        // 2. Botão "Vamos lá" (Validação de E-mail)
-        const btnSubmit = document.getElementById('btnSubmit');
-        const emailInput = document.getElementById('emailInput');
+        <div class="secao">
+            <h2>Filmes Populares</h2>
+            <div class="carrossel" id="filmes-container"></div>
+        </div>
+                <div class="secao">
+            <h2>Séries Populares</h2>
+            <div class="carrossel" id="series-container"></div>
+        </div>
 
-        btnSubmit.addEventListener('click', () => {
-            const emailValue = emailInput.value.trim();
-            if (emailValue === '' || !emailValue.includes('@')) {
-                alert('Por favor, insira um e-mail válido para continuar no LORD-CINE!');
-                emailInput.focus();
-            } else {
-                alert('E-mail cadastrado com sucesso! Bem-vindo ao LORD-CINE, ' + emailValue);
-                emailInput.value = '';
-            }
-        });
-
-        // 3. Botão "Entrar" do topo
-        const btnLogin = document.getElementById('btnLogin');
-        btnLogin.addEventListener('click', () => {
-            alert('Redirecionando para a tela de login do LORD-CINE...');
-        });
-
-        // 4. Seletor de Idioma
-        const langSelect = document.getElementById('langSelect');
-        langSelect.addEventListener('change', (e) => {
-            if (e.target.value === 'en') {
-                alert('Idioma alterado para Inglês (Simulação).');
-            } else {
-                alert('Idioma alterado para Português.');
-            }
-        });
-    </script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

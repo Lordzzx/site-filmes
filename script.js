@@ -16,6 +16,8 @@ const auth = firebase.auth();
 const container = document.getElementById("filmes-container");
 const top100Container = document.getElementById("top100-container");
 const continuarContainer = document.getElementById("continuar-container");
+const seriesContainer = document.getElementById("series-container");
+let todasSeries = [];
 const secaoContinuar = document.getElementById("secao-continuar");
 const categoriasNav = document.getElementById("categorias-nav");
 const buscaInput = document.getElementById("busca-input");
@@ -99,6 +101,13 @@ function renderizarContinuarAssistindo() {
   secaoContinuar.style.display = "block";
   continuarContainer.innerHTML = "";
   filmesHistorico.forEach((filme) => { continuarContainer.appendChild(criarCard(filme)); });
+}
+
+function renderizarSeries() {
+  seriesContainer.innerHTML = "";
+  todasSeries.forEach((serie) => {
+    seriesContainer.appendChild(criarCard(serie));
+  });
 }
 
 function renderizarBanner() {
